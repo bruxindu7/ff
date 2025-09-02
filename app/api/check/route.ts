@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const allowedOrigins = [
-  'http://localhost:3000',
-  'https://ff-et69.vercel.app',
-  'https://www.recargajogo.com.de',
+  'https://www.recargasjogo.com',
 ];
 
 function isOriginAllowed(request: NextRequest): boolean {

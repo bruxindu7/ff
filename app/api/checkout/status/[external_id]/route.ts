@@ -5,9 +5,7 @@ const BUCKPAY_BASE_URL = "https://api.realtechdev.com.br";
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://ff-et69.vercel.app",
-  "https://www.recargajogo.com.de",
+  "https://www.recargasjogo.com",
 ];
 
 // helper para validar a origem

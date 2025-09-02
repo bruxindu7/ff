@@ -3,9 +3,7 @@ import type { NextRequest } from "next/server";
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://ff-et69.vercel.app",
-  "https://www.recargajogo.com.de",
+  "https://www.recargasjogo.com",
 ];
 
 // helper para validar origem
