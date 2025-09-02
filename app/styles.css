@@ -769,7 +769,7 @@ header {
 
 .carousel {
   position: relative;
-  max-width: 920px;  /* 🔥 largura menor do carrossel */
+  max-width: 720px;  /* 🔥 largura menor do carrossel */
   margin: 0 auto;
   overflow: hidden;
   border-radius: 14px;
@@ -945,6 +945,12 @@ header {
 .plan.selected {
   border-color: #ef4444;
   background: #fef2f2;
+}
+
+@media (max-width: 768px) {
+  .carousel {
+    max-width: 90%; /* ou um valor fixo menor, ex: 360px */
+  }
 }
 
 @media (max-width:640px){
