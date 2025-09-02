@@ -1,0 +1,262 @@
+:root {
+  --bg: #f7f7f9;
+  --surface: #ffffff;
+  --line: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #ef4444;
+  --radius: 14px;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  z-index: 40;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.brand-text img {
+  height: 50px;
+  width: auto;
+  display: inline-block;
+}
+
+.brand-text .divider {
+  width: 1px;
+  height: 20px;
+  background: #d1d5db;
+}
+
+.profile {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* Caixa principal do upsell */
+.checkout {
+  max-width: 500px;
+  margin: 40px auto;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 30px;
+  text-align: center;
+    border: 1px solid var(--line);
+
+}
+
+.checkout h2 {
+  font-family: 'GarenaRegular', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.checkout p.subtext {
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* Lista de ofertas */
+.offer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.offer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+.offer-item:hover {
+  border-color: var(--primary);
+}
+
+.offer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.offer-item img {
+  width: 62px;
+  height: 62px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.offer-info {
+  text-align: left;
+}
+
+.offer-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.offer-info span {
+  font-size: 18px;
+  color: #18191a;
+  font-weight: 1000;
+}
+
+.offer-item input[type="checkbox"] {
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  background-color: #fff;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* quando marcado */
+.offer-item input[type="checkbox"]:checked {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+.offer-item input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 1px 1px 0;
+  transform: rotate(45deg);
+}
+
+/* Quando o checkbox não é selecionado */
+.offer-item input[type="checkbox"]:not(:checked)::after {
+  content: "";
+}
+
+/* Borda vermelha no hover */
+.offer-item input[type="checkbox"]:hover {
+  border-color: #ef4444; /* Borda vermelha no hover */
+}
+
+/* Total */
+.offer-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.offer-total span.total {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+/* Botão principal */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s;
+}
+
+.btn-submit:hover {
+  background: #d32f2f;
+}
+
+/* Link "Não quero" */
+.no-thanks {
+  display: block;
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.no-thanks:hover {
+  color: #111827;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .checkout {
+    max-width: 100%;
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .offer-item {
+    flex-direction: row;
+  }
+
+  .offer-left {
+    flex: 1;
+  }
+
+  .offer-info h3 {
+    font-size: 13px;
+  }
+
+  .offer-info span {
+    font-size: 13px;
+  }
+}

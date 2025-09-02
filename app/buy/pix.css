@@ -1,0 +1,533 @@
+    :root{
+      --bg:#f7f7f9;
+      --surface:#ffffff;
+      --line:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --primary:#ef4444;
+      --radius:14px;
+      --shadow:0 10px 28px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+body {
+  font-family: Inter, sans-serif;
+  background: url("https://cdn-gop.garenanow.com/gop/mshop/www/live/assets/FF-06d91604.png") no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center 80px; /* 🔥 desloca a imagem 80px pra baixo */
+  color: var(--text);
+}
+
+    .container{max-width:1120px; margin:0 auto; padding:0 20px}
+
+    /* Header */
+    header{position:sticky; top:0; background:#fff; border-bottom:1px solid var(--line); z-index:40}
+    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand-logo{width:28px;height:28px;border-radius:8px; display:grid; place-items:center; background:linear-gradient(135deg,#ef4444,#f59e0b); color:#fff}
+    .profile{width:36px;height:36px;border-radius:50%; background:#ddd}
+
+.brand-text {
+  font-family: 'GarenaRegular', sans-serif;
+  font-weight: 500;
+  color: #1f2937;       /* cinza escuro */
+  font-size: 14px;
+  line-height: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;            /* espaçamento entre logo, barra e texto */
+}
+
+.brand-text img {
+  height: 50px;         /* tamanho da logo */
+  width: auto;
+  display: inline-block;
+}
+.offer-title {
+  color: #030712;                  /* cor pedida */
+  text-align: center;              /* centralizado */
+  font-size: 14px;                 /* text-sm */
+  line-height: 18px;               /* /[18px] */
+  font-weight: 500;                /* font-medium */
+  font-family: 'GarenaRegular', sans-serif; /* mesma fonte Garena */
+  margin-top: 8px;
+  margin-bottom: 10px;             /* espaço extra abaixo */
+}
+
+.brand-text .divider {
+  width: 1px;
+  height: 20px;
+  background: #d1d5db;  /* cor da barra (cinza claro) */
+}
+.back-btn {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  background: rgba(0, 0, 0, 0.404);  /* fundo translúcido */
+  color: #fff;
+  border: 1px solid #d4d4d4;        /* 🔥 borda branca igual Garena */
+  border-radius: 999px;          /* 🔥 arredondado estilo pílula */
+  padding: 6px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'GarenaRegular', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .2s;
+}
+.back-btn:hover {
+  background: rgba(0,0,0,0.8);   /* escurece no hover */
+}
+.back-btn .icon {
+  font-size: 15px;
+  line-height: 1;
+    color: #dadada;
+}
+
+
+@media (max-width: 768px) {
+  .brand-text {
+    max-width: 6rem;          /* max-w-24 */
+  }
+}
+
+@media (min-width: 768px) {
+  .brand-text {
+    font-size: 1rem;          /* text-base */
+    line-height: 1.25rem;     /* /5 */
+  }
+}
+
+    .checkout{
+      max-width: 600px;
+      margin: 40px auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    /* Banner */
+    .banner{
+      position: relative;
+      height: 130px;
+      overflow: hidden;
+    }
+    .banner img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Ícone fora */
+    .game-header{
+      position: relative;
+      margin-top: -45px;
+      text-align: center;
+    }
+    .game-icon{
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      border: 3px solid #fff;
+      background: #fff;
+    }
+    .game-header h2{
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+input:focus {
+  outline: none;
+  border-color: var(--line); /* mantém a cor de borda normal */
+  box-shadow: none;
+}
+.summary span img {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.summary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0px;   /* espaçamento natural */
+}
+.btn-copy {
+  background: #d32f2f;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.btn-copy:hover {
+  background: #b71c1c; /* tom mais escuro no hover */
+}
+
+    /* Resumo */
+    .summary{
+      padding: 60px 20px 20px;
+    }
+    .summary p{
+      display:flex;
+      justify-content:space-between;
+      font-size:14px;
+      margin:8px 0;
+    }
+    .summary strong{font-size:15px}
+    .summary .icon{
+      width:16px;height:16px;
+      margin-right:4px;
+      vertical-align:middle;
+    }
+@font-face {
+  font-family: 'GarenaRegular';
+  src: url('GarenaRegular.otf') format('opentype'); /* ajuste o caminho do arquivo */
+  font-weight: normal;
+  font-style: normal;
+}
+#summaryTotal,
+#summaryBase,
+#summaryBonus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0px;
+}
+
+#summaryTotal img,
+#summaryBase img,
+#summaryBonus img {
+  width: 16px;
+  height: 16px;
+}
+
+.summary-details {
+  margin-top: 16px;
+}
+
+.summary-details p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'GarenaRegular', sans-serif; /* 🔥 todos os textos aqui usam Garena */
+  font-size: 16px; /* 🔥 maior */
+  margin: 20px 0;  /* 🔥 mais espaço */
+  color: #4B5563;
+}
+
+.summary-details strong {
+  font-size: 16px;
+  font-weight: normal;  /* 🔥 tira o negrito do strong */
+  font-family: 'GarenaRegular', sans-serif;
+  color: #1F2937;
+}
+.error-message {
+  color: var(--primary);
+  font-size: 13px;
+  margin-top: 4px;
+  font-family: 'Inter', sans-serif;
+  display: none; /* sempre escondido no início */
+}
+
+
+    /* Formulário */
+    form{
+      padding:20px;
+      border-top:7px solid var(--line);
+    }
+    .form-group{margin-bottom:16px}
+    label{
+      font-size:13px;
+      color:var(--muted);
+      display:block;
+      margin-bottom:4px;
+    }
+    input{
+      width:100%;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      font-size:14px;
+    }
+    .promo-box{display:flex;gap:8px}
+    .btn-small{
+      padding:0 16px;
+      background:var(--primary);
+      border:none;
+      border-radius:8px;
+      color:#fff;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    /* Botão final */
+    .btn-submit{
+      width:100%;
+      padding:14px;
+      background:#d32f2f;
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      margin-top:20px;
+    }
+.info-text {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  margin-bottom: 22px; /* 🔥 espaço extra abaixo */
+  line-height: 1.4;
+}
+.bonus-box {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  background: #fff;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+.bonus-box p {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.bonus-box p span:first-child {
+  color: #4B5563;   /* 🔥 "Preço Original" e "Bônus Geral" em cinza */
+  font-family: 'GarenaRegular', sans-serif;
+}
+
+.bonus-box p span:last-child {
+  color: #111827;        /* 🔥 os valores (100) em preto */
+  font-family: 'GarenaRegular', sans-serif;
+  font-weight: normal;   /* garante que não fique bold */
+}
+
+form label {
+  font-family: 'GarenaRegular', sans-serif; /* 🔥 fonte Garena */
+  font-size: 15px;
+  color: #1F2937;   /* preto */
+  font-weight: normal; /* usa o peso normal da Garena */
+  display: block;
+  margin-bottom: 10px;
+}
+
+.status-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 20px auto;       /* 🔥 centraliza */
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+  max-width: 450px;        /* 🔥 largura menor, igual ao da Garena */
+  text-align: left;        /* texto continua alinhado à esquerda */
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.status-header .icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  stroke: #111827;
+}
+.status-text {
+  font-weight: normal;                  /* peso normal da fonte */
+  font-family: 'GarenaRegular', sans-serif;  /* 🔥 fonte Garena */
+  font-size: 14px;                      /* mantém legível */
+  color: #030712;                       /* cor pedida */
+}
+
+
+#countdown {
+  font-weight: 600;
+  color: #111827;
+  display: inline;
+  vertical-align: baseline;
+}
+
+.divider {
+  border: none;
+  border-top: 7px solid #e5e7eb; /* mesma cor das outras linhas */
+  margin: 14px 0;                /* espaço em cima e embaixo */
+}
+/* 🔥 Caixa do PIX */
+.pix-box {
+  text-align: center;   /* tudo dentro centralizado */
+  margin-top: 25px;
+}
+
+.pix-box h3 {
+  margin-bottom: 12px;
+  font-size: 18px;                 /* 🔥 tamanho atualizado */
+  font-family: 'GarenaRegular', sans-serif; /* 🔥 fonte Garena */
+  font-weight: normal;             /* usa o peso normal da fonte */
+  text-align: center;              /* centralizado */
+  color: #1F2937;                  /* 🔥 cor pedida */
+}
+
+
+/* QR Code */
+.pix-box .qrcode {
+  margin: 20px auto;
+}
+
+.pix-box .qrcode img {
+  width: 160px;   /* 🔥 tamanho reduzido */
+  height: 160px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Nome da empresa */
+.pix-box .company {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+  text-align: center;   /* garante centralização */
+  display: block;
+  width: 100%;
+}
+
+/* CNPJ */
+.pix-box .cnpj {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  text-align: center;   /* garante centralização */
+  display: block;
+  width: 100%;
+}
+.pix-code {
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  color: #111827;
+  text-align: center;
+  word-break: break-all;
+  margin: 0 auto 14px;
+  max-width: 500px;   /* 🔥 largura controlada */
+}
+.instructions {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 18px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6B7280;
+  margin-top: 20px;
+}
+.game-header .game-icon {
+  display: inline-block;
+}
+
+.instructions p {
+  margin: 10px 0;
+  color: #6B7280;
+}
+
+.instructions ol {
+      font-size: 13px;
+
+  margin: 10px 0 16px 5px;
+}
+
+.instructions ol li {
+  margin-bottom: 6px;
+  color: #6B7280;
+
+}
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
+
+.toast {
+  min-width: 260px;
+  max-width: 360px;
+  padding: 25px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-size: 14px;
+  border: 1px solid #dfe0e2; /* 🔥 borda fina cinza */
+}
+
+.toast strong {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.toast p {
+  margin: 0;
+  font-size: 13px;
+  color: #374151;
+}
+
+/* Sucesso */
+.toast.success {
+  background: #fff;
+}
+
+/* Erro */
+.toast.error {
+  background: #D91A0D;
+  color: #ffffff;
+}
+
+
+/* Corrige apenas o header no responsivo */
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    padding: 0 12px;
+  }
+
+  .nav {
+    height: auto;                /* 🔥 altura flexível */
+    padding: 8px;
+  }
+
+  .brand-text {
+    font-size: 12px;             /* fonte menor */
+    gap: 6px;
+    max-width: 100%;             /* ocupa toda largura possível */
+    white-space: normal;         /* 🔥 permite quebrar linha */
+    overflow: visible;           /* mostra tudo */
+    text-overflow: unset;        /* remove "..." */
+    flex-wrap: wrap;             /* 🔥 quebra em 2 linhas se precisar */
+  }
+
+  .brand-text img {
+    height: 32px;                /* logo menor */
+  }
+
+  .profile {
+    width: 32px;
+    height: 32px;
+  }
+}
