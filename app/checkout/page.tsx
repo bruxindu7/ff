@@ -36,7 +36,7 @@ const elUser = document.getElementById("summaryUser");
 if (elTotal) elTotal.innerHTML = `<img src="point.webp" class="icon">${total}`;
 if (elBase) elBase.innerHTML = `<img src="point.webp" class="icon">${base}`;
 if (elBonus) elBonus.innerHTML = `<img src="point.webp" class="icon">${bonus}`;
-if (elPrice) elPrice.textContent = `R$ ${price}`;
+if (elPrice) elPrice.textContent = `R$ ${Number(price).toFixed(2)}`;
 if (elPayment) elPayment.textContent = payment;
 
 // 🔥 pega nickname do usuário logado (salvo no localStorage pela Home)
@@ -369,15 +369,16 @@ if (telefoneCardInput) {
     const finalizarBtn = document.getElementById("finalizarPromo") as HTMLButtonElement;
 
     let promoExtra = 0;
-    const baseCheckout = parseFloat(String(checkoutData.price).replace(",", ".")) || 0;
+const baseCheckout = parseFloat(String(checkoutData.price).replace(",", ".")) || 0;
 
-    // 🔥 Inicializa o total do modal com o valor base
-    if (promoTotalEl) {
-      promoTotalEl.textContent = `R$ ${baseCheckout.toFixed(2)}`;
-    }
-    if (finalizarBtn) {
-      finalizarBtn.textContent = `Adicionar e Pagar R$ ${baseCheckout.toFixed(2)}`;
-    }
+// 🔥 Inicializa o total do modal com o valor base
+if (promoTotalEl) {
+  promoTotalEl.textContent = `R$ ${baseCheckout.toFixed(2)}`;
+}
+if (finalizarBtn) {
+  finalizarBtn.textContent = `Adicionar e Pagar R$ ${baseCheckout.toFixed(2)}`;
+}
+
 
     promoItems.forEach((item) => {
       const checkbox = item.querySelector(".promo-check") as HTMLInputElement;
@@ -403,17 +404,15 @@ if (telefoneCardInput) {
 
         const totalAtual = baseCheckout + promoExtra;
 
-        if (promoTotalEl) {
-          promoTotalEl.textContent = `R$ ${totalAtual.toFixed(2)}`;
-        }
-        if (finalizarBtn) {
-          finalizarBtn.textContent = `Adicionar e Pagar R$ ${totalAtual.toFixed(2)}`;
-        }
-
-// Atualiza o checkoutData no sessionStorage com o novo price
+if (promoTotalEl) {
+  promoTotalEl.textContent = `R$ ${totalAtual.toFixed(2)}`;
+}
+if (finalizarBtn) {
+  finalizarBtn.textContent = `Adicionar e Pagar R$ ${totalAtual.toFixed(2)}`;
+}
 sessionStorage.setItem("checkoutData", JSON.stringify({
   ...checkoutData,
-  price: totalAtual // Atualizando o preço, não o total
+  price: totalAtual.toFixed(2) // string "14.90"
 }));
       });
     });
@@ -535,7 +534,7 @@ document.getElementById("skipPromo")?.addEventListener("click", () => {
       }
 
       const checkoutData = JSON.parse(sessionStorage.getItem("checkoutData") || "{}");
-      const totalFinal = checkoutData.price;  // Usando o price atualizado
+const totalFinal = parseFloat(checkoutData.price);
 
       let amountCents = Math.round(totalFinal * 100);
       const orderId = Date.now().toString();
