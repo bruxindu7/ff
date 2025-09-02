@@ -4,10 +4,11 @@ const BUCKPAY_BASE_URL = "https://api.realtechdev.com.br";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { external_id: string } }
+  context: { params: Promise<{ external_id: string }> }
 ) {
   try {
-    const { external_id } = params;
+    // Agora precisa "await" porque params é Promise
+    const { external_id } = await context.params;
 
     const r = await fetch(
       `${BUCKPAY_BASE_URL}/v1/transactions/external_id/${external_id}`,

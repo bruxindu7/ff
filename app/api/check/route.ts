@@ -1,59 +1,54 @@
-import { NextResponse } from "next/server";
-import puppeteer from "puppeteer";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const SMILE_URL = "https://www.smile.one/merchant/freefire";
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://ff-et69.vercel.app',
+  'https://www.recargajogo.com.de',
+];
 
-async function getNickname(userId: string, zoneId = "BR") {
-const browser = await puppeteer.launch({
-  headless: true, // ou false se quiser ver o browser abrindo
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-});
-
-  const page = await browser.newPage();
-  await page.setRequestInterception(true);
-
-  return new Promise(async (resolve, reject) => {
-    page.on("request", (req) => req.continue());
-
-    page.on("response", async (res) => {
-      if (res.url().includes("/checkrole")) {
-        try {
-          const data = await res.json();
-          await browser.close();
-          resolve(data);
-        } catch (e) {
-          await browser.close();
-          reject(e);
-        }
-      }
-    });
-
-    try {
-      await page.goto(SMILE_URL, { waitUntil: "networkidle2" });
-
-      await page.type("#uid", userId);
-
-      await page.evaluate(() => {
-        document
-          .querySelector<HTMLInputElement>("#uid")
-          ?.dispatchEvent(new Event("change", { bubbles: true }));
-      });
-    } catch (e) {
-      await browser.close();
-      reject(e);
-    }
-  });
+function isOriginAllowed(request: NextRequest): boolean {
+  const referer = request.headers.get('referer');
+  if (!referer) return false;
+  return allowedOrigins.some((origin) => referer.startsWith(origin));
 }
 
-export async function POST(req: Request) {
-  try {
-    const { userId, zoneId } = await req.json();
-    const result = await getNickname(userId, zoneId || "BR");
-    return NextResponse.json(result);
-  } catch (err: any) {
-    console.error("Erro:", err.message);
+export async function GET(request: NextRequest) {
+  if (!isOriginAllowed(request)) {
+    return NextResponse.json({ error: 'Clonou errado kk' }, { status: 403 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const uid = searchParams.get('uid');
+
+  if (!uid) {
     return NextResponse.json(
-      { error: "Falha ao buscar nickname" },
+      { error: 'O ID do jogador é obrigatório.' },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const apiResponse = await fetch(
+      `https://freefirefwx-beta.squareweb.app/api/info_player?uid=${uid}&region=br`
+    );
+
+    const data = await apiResponse.json();
+
+    if (data.basicInfo && data.basicInfo.nickname) {
+      // ✅ Jogador encontrado
+      return NextResponse.json({ nickname: data.basicInfo.nickname }, { status: 200 });
+    } else {
+      // ❌ Jogador não encontrado
+      return NextResponse.json(
+        { error: data.message || 'ID de jogador não encontrado.' },
+        { status: 404 }
+      );
+    }
+  } catch (error) {
+    console.error('⛔ Erro ao consultar jogador:', error);
+    return NextResponse.json(
+      { error: 'Erro ao buscar jogador. Tente novamente.' },
       { status: 500 }
     );
   }
