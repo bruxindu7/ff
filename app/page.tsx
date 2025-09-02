@@ -222,36 +222,34 @@ async function doLogin() {
   btnLogin.textContent = "Aguarde...";
   btnLogin.style.background = "#f87171"; // 🔥 vermelho claro (igual o da sua imagem)
   btnLogin.disabled = true;
+try {
+  const res = await fetch(`/api/check?uid=${encodeURIComponent(userId)}&zoneId=BR`, {
+    method: "GET",
+  });
 
-  try {
-    const res = await fetch("/api/check", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, zoneId: "BR" }),
-    });
+  const data = await res.json();
 
-    const data = await res.json();
+  if (res.ok && data.nickname) {
+    // ✅ sucesso
+    localStorage.setItem("accountData", JSON.stringify({ userId, nickname: data.nickname }));
+    showAccount(data.nickname, userId);
 
-if (data.code === 200) {
-  localStorage.setItem("accountData", JSON.stringify({ userId, nickname: data.nickname }));
-  showAccount(data.nickname, userId);
+    // esconde mensagem de erro se login funcionar
+    const errorEl = document.getElementById("loginError") as HTMLElement;
+    if (errorEl) errorEl.style.display = "none";
+  } else {
+    // ❌ mostra erro se não encontrar
+    const errorEl = document.getElementById("loginError") as HTMLElement;
+    if (errorEl) {
+      errorEl.textContent = data.error || "ID de jogador não encontrado.";
+      errorEl.style.display = "block";
+    }
 
-  // ✅ esconde mensagem de erro se login funcionar
-  const errorEl = document.getElementById("loginError") as HTMLElement;
-  if (errorEl) errorEl.style.display = "none";
-} else {
-  // ❌ mostra erro se não encontrar
-  const errorEl = document.getElementById("loginError") as HTMLElement;
-  if (errorEl) {
-    errorEl.textContent = "ID de jogador não encontrado.";
-    errorEl.style.display = "block";
+    // restaura botão
+    btnLogin.textContent = originalText || "Login";
+    btnLogin.style.background = originalBg;
+    btnLogin.disabled = false;
   }
-
-  // restaura botão
-  btnLogin.textContent = originalText || "Login";
-  btnLogin.style.background = originalBg;
-  btnLogin.disabled = false;
-}
 } catch (err) {
   console.error(err);
 
@@ -268,7 +266,6 @@ if (data.code === 200) {
   btnLogin.disabled = false;
 }
 }
-
 
     function showAccount(nickname: string, userId: string) {
       (document.getElementById("login-card") as HTMLElement).style.display = "none";
