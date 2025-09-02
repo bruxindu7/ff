@@ -958,10 +958,10 @@ header {
   .hero-title{ font-size:18px; }
 }
 
-
 main {
-  padding: 18px 0 0px; /* 🔥 reduz o padding inferior */
+  padding: 0 0 18px; /* padding só embaixo */
 }
+
 
 
 
