@@ -25,7 +25,6 @@ export default function Checkout() {
       total = base;
     }
 
-// Preenche os campos do resumo
 const elTotal = document.getElementById("summaryTotal");
 const elBase = document.getElementById("summaryBase");
 const elBonus = document.getElementById("summaryBonus");
@@ -33,10 +32,13 @@ const elPrice = document.getElementById("summaryPrice");
 const elPayment = document.getElementById("summaryPayment");
 const elUser = document.getElementById("summaryUser");
 
+// 🔥 sempre normaliza o price
+const priceNumber = parseFloat(String(price).replace(",", ".")) || 0;
+
 if (elTotal) elTotal.innerHTML = `<img src="point.webp" class="icon">${total}`;
 if (elBase) elBase.innerHTML = `<img src="point.webp" class="icon">${base}`;
 if (elBonus) elBonus.innerHTML = `<img src="point.webp" class="icon">${bonus}`;
-if (elPrice) elPrice.textContent = `R$ ${Number(price).toFixed(2)}`;
+if (elPrice) elPrice.textContent = `R$ ${priceNumber.toFixed(2)}`;
 if (elPayment) elPayment.textContent = payment;
 
 // 🔥 pega nickname do usuário logado (salvo no localStorage pela Home)
@@ -477,10 +479,10 @@ document.getElementById("skipPromo")?.addEventListener("click", () => {
   const totalFinal = baseCheckout;
 
   // Atualizar o sessionStorage com o novo valor do price
-  sessionStorage.setItem("checkoutData", JSON.stringify({
-    ...checkoutData,
-    price: totalFinal // Atualizando o preço com o valor base
-  }));
+sessionStorage.setItem("checkoutData", JSON.stringify({
+  ...checkoutData,
+  price: totalFinal.toFixed(2) // garante "9.90"
+}));
 
   // Fechar o modal
   fecharPromo();
@@ -563,14 +565,15 @@ const totalFinal = parseFloat(checkoutData.price);
           return;
         }
 
-        sessionStorage.setItem("pixCheckout", JSON.stringify({
-          ...checkoutData,
-          transactionId: data.id,
-          brcode: data.brcode,
-          qrBase64: data.qrBase64,
-          totalAmount: totalFinal,
-          createdAt: Date.now(),
-        }));
+sessionStorage.setItem("pixCheckout", JSON.stringify({
+  ...checkoutData,
+  transactionId: data.id,
+  brcode: data.brcode,
+  qrBase64: data.qrBase64,
+  totalAmount: totalFinal.toFixed(2), // garante "14.90"
+  createdAt: Date.now(),
+}));
+
 
         setTimeout(() => {
           window.location.href = "/buy";
