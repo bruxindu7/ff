@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const BUCKPAY_BASE_URL = "https://api.realtechdev.com.br";
 const PIX_CREATE_PATH = "/v1/transactions";
 
-export async function POST(req: Request) {
+// 🔐 lista de domínios permitidos
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://ff-et69.vercel.app",
+  "https://www.recargajogo.com.de",
+];
+
+// helper para validar origem
+function isOriginAllowed(request: NextRequest): boolean {
+  const referer = request.headers.get("referer");
+  if (!referer) return false;
+  return allowedOrigins.some((origin) => referer.startsWith(origin));
+}
+
+export async function POST(req: NextRequest) {
+  if (!isOriginAllowed(req)) {
+    return NextResponse.json({ error: "Clonei certo chora n magicu opkkkkkkkkkk" }, { status: 403 });
+  }
+
   try {
     const { amount, orderId, description, payer } = await req.json();
 
@@ -24,17 +43,12 @@ export async function POST(req: Request) {
     };
 
     console.log("➡ Enviando para BuckPay:", payload);
-    console.log("➡ Headers:", {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${process.env.BUCKPAY_TOKEN}`,
-      "User-Agent": "Buckpay API",
-    });
 
     const r = await fetch(BUCKPAY_BASE_URL + PIX_CREATE_PATH, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.BUCKPAY_TOKEN!}`,
+        Authorization: `Bearer ${process.env.BUCKPAY_TOKEN!}`,
         "User-Agent": "Buckpay API",
       },
       body: JSON.stringify(payload),

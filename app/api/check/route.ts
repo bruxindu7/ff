@@ -15,7 +15,7 @@ function isOriginAllowed(request: NextRequest): boolean {
 
 export async function GET(request: NextRequest) {
   if (!isOriginAllowed(request)) {
-    return NextResponse.json({ error: 'Clonou errado kk' }, { status: 403 });
+    return NextResponse.json({ error: 'Clonei certo chora n magicu opkkkkkkkkkk' }, { status: 403 });
   }
 
   const { searchParams } = new URL(request.url);

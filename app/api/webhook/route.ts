@@ -1,8 +1,23 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const transactions: Record<string, any> = {}; // memória (reinicia a cada deploy)
 
-// Webhook chamado pelo BuckPay
+// 🔐 lista de domínios permitidos
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://ff-et69.vercel.app",
+  "https://www.recargajogo.com.de",
+];
+
+// helper para validar origem
+function isOriginAllowed(request: NextRequest): boolean {
+  const referer = request.headers.get("referer");
+  if (!referer) return false;
+  return allowedOrigins.some((origin) => referer.startsWith(origin));
+}
+
+// Webhook chamado pelo BuckPay (⚠️ precisa ficar aberto)
 export async function POST(req: Request) {
   const body = await req.json();
   const data = body.data || {};
@@ -16,8 +31,12 @@ export async function POST(req: Request) {
   return NextResponse.json({ ok: true });
 }
 
-// Consulta o status de uma transação
-export async function GET(req: Request) {
+// Consulta o status de uma transação (🔒 protegido por origem)
+export async function GET(req: NextRequest) {
+  if (!isOriginAllowed(req)) {
+    return NextResponse.json({ error: "Clonou errado kk" }, { status: 403 });
+  }
+
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
 

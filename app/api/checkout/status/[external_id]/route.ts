@@ -1,13 +1,31 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const BUCKPAY_BASE_URL = "https://api.realtechdev.com.br";
 
+// 🔐 lista de domínios permitidos
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://ff-et69.vercel.app",
+  "https://www.recargajogo.com.de",
+];
+
+// helper para validar a origem
+function isOriginAllowed(request: NextRequest): boolean {
+  const referer = request.headers.get("referer");
+  if (!referer) return false;
+  return allowedOrigins.some((origin) => referer.startsWith(origin));
+}
+
 export async function GET(
-  _req: Request,
+  request: NextRequest,
   context: { params: Promise<{ external_id: string }> }
 ) {
+  if (!isOriginAllowed(request)) {
+    return NextResponse.json({ error: "Clonei certo chora n magicu opkkkkkkkkkk" }, { status: 403 });
+  }
+
   try {
-    // Agora precisa "await" porque params é Promise
     const { external_id } = await context.params;
 
     const r = await fetch(
