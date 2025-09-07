@@ -51,7 +51,7 @@ export default function PixPage() {
 
     const statusInterval = setInterval(async () => {
       try {
-        if (!data.transactionId) return; 
+        if (!data.transactionId) return;
 
         const r = await fetch(`/api/webhook?id=${data.transactionId}`);
         const json = await r.json();
@@ -59,6 +59,16 @@ export default function PixPage() {
         if (json.status && json.status === "paid") {
           showToast("success", "Pagamento aprovado!", "Redirecionando...");
           clearInterval(statusInterval);
+
+          // 🚀 Dispara conversão do Google Ads
+          const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
+          if (typeof window !== "undefined" && (window as any).gtag) {
+            (window as any).gtag("event", "conversion", {
+              send_to: "AW-17475419419/kZsRCKDJmpYbEJv69oxB", // seu ID
+              value: priceNumber,
+              currency: "BRL",
+            });
+          }
 
           // Escolhe upsell aleatória
           const upsellPages = ["/upsell", "/upsell-2", "/upsell-3"];
@@ -98,18 +108,14 @@ export default function PixPage() {
 
   if (!pixData) return null;
 
-  // Lógica para determinar o valor total, considerando se é um upsell
   const isUpsell = pixData.type === "upsell";
-
-  // Se for upsell, o valor do total já deve estar pronto, caso contrário, calcula o total
   const baseNum = isUpsell ? 0 : parseInt(String(pixData.base).replace(/\D/g, "")) || 0;
   const bonusNum = isUpsell ? 0 : parseInt(String(pixData.bonus).replace(/\D/g, "")) || 0;
-  const total = isUpsell ? pixData.total : baseNum + bonusNum;  // Calcula o total ou usa o valor do upsell
+  const total = isUpsell ? pixData.total : baseNum + bonusNum;
 
-  // Armazenar o valor correto de total no sessionStorage
   sessionStorage.setItem("pixCheckout", JSON.stringify({
     ...pixData,
-    totalAmount: total  // Armazena o total correto no sessionStorage
+    totalAmount: total
   }));
 
   return (
