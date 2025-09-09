@@ -1,57 +1,45 @@
-import puppeteer from "puppeteer";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const SMILE_URL = "https://www.smile.one/merchant/freefire";
+const allowedOrigins = [
+  'https://www.recargasjogo.com',
+];
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const uid = searchParams.get("uid");
-  const zoneId = searchParams.get("zoneId") || "BR";
+function isOriginAllowed(request: NextRequest): boolean {
+  const referer = request.headers.get('referer');
+  if (!referer) return false;
+  return allowedOrigins.some((origin) => referer.startsWith(origin));
+}
+
+export async function GET(request: NextRequest) {
+  if (!isOriginAllowed(request)) {
+    return NextResponse.json({ nickname: 'Logado' }, { status: 200 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const uid = searchParams.get('uid');
 
   if (!uid) {
-    return NextResponse.json({ error: "O parâmetro uid é obrigatório." }, { status: 400 });
+    return NextResponse.json({ nickname: 'Logado' }, { status: 200 });
   }
 
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-
-    const page = await browser.newPage();
-    await page.setRequestInterception(true);
-
-    const data = await new Promise<any>((resolve, reject) => {
-      page.on("request", (req) => req.continue());
-
-      page.on("response", async (res) => {
-        if (res.url().includes("/checkrole")) {
-          try {
-            const json = await res.json();
-            await browser.close();
-            resolve(json);
-          } catch (err) {
-            await browser.close();
-            reject(err);
-          }
-        }
-      });
-
-      (async () => {
-        await page.goto(SMILE_URL, { waitUntil: "networkidle2" });
-        await page.type("#uid", uid);
-        await page.evaluate(() => {
-          document.querySelector<HTMLInputElement>("#uid")
-            ?.dispatchEvent(new Event("change", { bubbles: true }));
-        });
-      })().catch(reject);
-    });
-
-    return NextResponse.json(data, { status: 200 });
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: "Falha ao buscar nickname" },
-      { status: 500 }
+    const apiResponse = await fetch(
+      `https://freefirefwx-beta.squareweb.app/api/info_player?uid=${uid}&region=br`
     );
+
+    const data = await apiResponse.json();
+
+    if (data.basicInfo && data.basicInfo.nickname) {
+      // ✅ Jogador encontrado
+      return NextResponse.json({ nickname: data.basicInfo.nickname }, { status: 200 });
+    } else {
+      // ❌ Jogador não encontrado → ainda responde 200 com Logado
+      return NextResponse.json({ nickname: 'Logado' }, { status: 200 });
+    }
+  } catch (error) {
+    console.error('⛔ Erro ao consultar jogador:', error);
+    // ⚠️ Mesmo erro retorna 200 com Logado
+    return NextResponse.json({ nickname: 'Logado' }, { status: 200 });
   }
 }

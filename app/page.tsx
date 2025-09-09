@@ -270,7 +270,7 @@ try {
     function showAccount(nickname: string, userId: string) {
       (document.getElementById("login-card") as HTMLElement).style.display = "none";
       (document.getElementById("account-card") as HTMLElement).style.display = "block";
-      (document.getElementById("nickname") as HTMLElement).textContent = "Usuário: " + nickname;
+      (document.getElementById("nickname") as HTMLElement).textContent = "Usuário " + nickname;
       (document.getElementById("userid") as HTMLElement).textContent = "ID do jogador: " + userId;
     }
 
