@@ -1,67 +1,72 @@
+import puppeteer from "puppeteer";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-const allowedOrigins = [
-  "https://www.recargasjogo.com", // 🔒 só aceita requests desse domínio
-];
+const SMILE_URL = "https://www.smile.one/merchant/freefire";
+const ALLOWED_ORIGIN = "https://www.recargasjogo.com";
 
-function isOriginAllowed(request: NextRequest): boolean {
-  const referer = request.headers.get("referer");
-  if (!referer) return false;
-  return allowedOrigins.some((origin) => referer.startsWith(origin));
-}
+export async function GET(req: Request) {
+  // 🔒 valida se a origem é a permitida
+  const referer = req.headers.get("referer") || "";
+  const origin = req.headers.get("origin") || "";
 
-export async function GET(request: NextRequest) {
-  // 🚫 bloqueia se não for do domínio autorizado
-  if (!isOriginAllowed(request)) {
+  if (!referer.startsWith(ALLOWED_ORIGIN) && origin !== ALLOWED_ORIGIN) {
     return NextResponse.json(
-      { error: "Clonei certo chora n magicu opkkkkkkkkkk" },
+      { error: "Acesso não autorizado" },
       { status: 403 }
     );
   }
 
-  const { searchParams } = new URL(request.url);
+  const { searchParams } = new URL(req.url);
   const uid = searchParams.get("uid");
+  const zoneId = searchParams.get("zoneId") || "BR";
 
   if (!uid) {
     return NextResponse.json(
-      { error: "O ID do jogador é obrigatório." },
+      { error: "O parâmetro uid é obrigatório." },
       { status: 400 }
     );
   }
 
   try {
-    const apiResponse = await fetch(
-      `https://freefirefwx-beta.squareweb.app/api/info_player?uid=${uid}&region=br`
-    );
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
 
-    // Se a API externa cair ou não responder JSON válido
-    if (!apiResponse.ok) {
-      return NextResponse.json(
-        { error: `Falha ao consultar serviço externo (${apiResponse.status})` },
-        { status: 502 } // Bad Gateway → erro no servidor externo
-      );
-    }
+    const page = await browser.newPage();
+    await page.setRequestInterception(true);
 
-    const data = await apiResponse.json();
+    const data = await new Promise<any>((resolve, reject) => {
+      page.on("request", (req) => req.continue());
 
-    if (data?.basicInfo?.nickname) {
-      // ✅ Jogador encontrado
-      return NextResponse.json(
-        { nickname: data.basicInfo.nickname },
-        { status: 200 }
-      );
-    }
+      page.on("response", async (res) => {
+        if (res.url().includes("/checkrole")) {
+          try {
+            const json = await res.json();
+            await browser.close();
+            resolve(json);
+          } catch (err) {
+            await browser.close();
+            reject(err);
+          }
+        }
+      });
 
-    // ❌ Jogador não encontrado ou erro retornado pela API externa
+      (async () => {
+        await page.goto(SMILE_URL, { waitUntil: "networkidle2" });
+        await page.type("#uid", uid);
+        await page.evaluate(() => {
+          document
+            .querySelector<HTMLInputElement>("#uid")
+            ?.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+      })().catch(reject);
+    });
+
+    return NextResponse.json(data, { status: 200 });
+  } catch (err: any) {
     return NextResponse.json(
-      { error: data.message || "ID de jogador não encontrado." },
-      { status: 404 }
-    );
-  } catch (error) {
-    console.error("⛔ Erro ao consultar jogador:", error);
-    return NextResponse.json(
-      { error: "Erro inesperado ao buscar jogador. Tente novamente mais tarde." },
+      { error: "Falha ao buscar nickname" },
       { status: 500 }
     );
   }
