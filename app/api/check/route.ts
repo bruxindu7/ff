@@ -2,29 +2,14 @@ import puppeteer from "puppeteer";
 import { NextResponse } from "next/server";
 
 const SMILE_URL = "https://www.smile.one/merchant/freefire";
-const ALLOWED_ORIGIN = "https://www.recargasjogo.com";
 
 export async function GET(req: Request) {
-  // 🔒 valida se a origem é a permitida
-  const referer = req.headers.get("referer") || "";
-  const origin = req.headers.get("origin") || "";
-
-  if (!referer.startsWith(ALLOWED_ORIGIN) && origin !== ALLOWED_ORIGIN) {
-    return NextResponse.json(
-      { error: "Acesso não autorizado" },
-      { status: 403 }
-    );
-  }
-
   const { searchParams } = new URL(req.url);
   const uid = searchParams.get("uid");
   const zoneId = searchParams.get("zoneId") || "BR";
 
   if (!uid) {
-    return NextResponse.json(
-      { error: "O parâmetro uid é obrigatório." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "O parâmetro uid é obrigatório." }, { status: 400 });
   }
 
   try {
@@ -56,8 +41,7 @@ export async function GET(req: Request) {
         await page.goto(SMILE_URL, { waitUntil: "networkidle2" });
         await page.type("#uid", uid);
         await page.evaluate(() => {
-          document
-            .querySelector<HTMLInputElement>("#uid")
+          document.querySelector<HTMLInputElement>("#uid")
             ?.dispatchEvent(new Event("change", { bubbles: true }));
         });
       })().catch(reject);
