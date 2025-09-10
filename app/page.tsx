@@ -226,7 +226,7 @@ btnCheckout?.addEventListener("click", () => {
 
   if (selectedPrice && selectedPayment) {
     const payment = document.querySelector(".pay.selected img")?.getAttribute("alt");
-    const user = (document.querySelector(".input") as HTMLInputElement)?.value || "Convidado";
+    const user = (document.querySelector(".input") as HTMLInputElement)?.value || "Logado";
 
     const checkoutData = { price: selectedPrice, base: selectedBase, bonus: selectedBonus, payment, user };
     sessionStorage.setItem("checkoutData", JSON.stringify(checkoutData));

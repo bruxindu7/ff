@@ -80,7 +80,7 @@ if (accountData) {
   const acc = JSON.parse(accountData);
   if (acc.nickname) playerName = acc.nickname;
 }
-if (elUser) elUser.textContent = playerName || "Convidado";
+if (elUser) elUser.textContent = playerName || "Logado";
 
 
     // Função que remove acentos
@@ -702,7 +702,7 @@ sessionStorage.setItem("pixCheckout", JSON.stringify({
               <strong id="summaryPayment"></strong>
             </p>
             <p>
-              <span>Nome do Jogador</span>
+              <span>Usuário</span>
               <strong id="summaryUser"></strong>
             </p>
           </div>

@@ -208,7 +208,7 @@ export default function PixPage() {
               </p>
               {!isSpecial && (
                 <p>
-                  <span>Nome do Jogador</span>
+                  <span>Usuário</span>
                   <strong>{pixData.user}</strong>
                 </p>
               )}
