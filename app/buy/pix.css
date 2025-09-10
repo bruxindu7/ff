@@ -327,12 +327,15 @@ form label {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   padding: 14px 16px;
-  margin: 20px auto;       /* 🔥 centraliza */
+  margin: 20px auto;
   font-size: 14px;
   color: #374151;
   line-height: 1.5;
-  max-width: 450px;        /* 🔥 largura menor, igual ao da Garena */
-  text-align: left;        /* texto continua alinhado à esquerda */
+  max-width: 450px;
+  text-align: left;
+
+  display: block;       /* garante que é block */
+  width: fit-content;   /* 🔥 só ocupa o necessário */
 }
 
 .status-header {

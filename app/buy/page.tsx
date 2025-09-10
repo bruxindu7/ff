@@ -60,17 +60,15 @@ export default function PixPage() {
           showToast("success", "Pagamento aprovado!", "Redirecionando...");
           clearInterval(statusInterval);
 
-          // 🚀 Dispara conversão do Google Ads
           const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
           if (typeof window !== "undefined" && (window as any).gtag) {
             (window as any).gtag("event", "conversion", {
-              send_to: "AW-17475419419/kZsRCKDJmpYbEJv69oxB", // seu ID
+              send_to: "AW-17475419419/kZsRCKDJmpYbEJv69oxB",
               value: priceNumber,
               currency: "BRL",
             });
           }
 
-          // Escolhe upsell aleatória
           const upsellPages = ["/upsell", "/upsell-2", "/upsell-3"];
           const randomPage = upsellPages[Math.floor(Math.random() * upsellPages.length)];
           window.location.href = randomPage;
@@ -108,14 +106,16 @@ export default function PixPage() {
 
   if (!pixData) return null;
 
-  const isUpsell = pixData.type === "upsell";
-  const baseNum = isUpsell ? 0 : parseInt(String(pixData.base).replace(/\D/g, "")) || 0;
-  const bonusNum = isUpsell ? 0 : parseInt(String(pixData.bonus).replace(/\D/g, "")) || 0;
-  const total = isUpsell ? pixData.total : baseNum + bonusNum;
+  // 🚀 Detecta se é especial (sem bônus)
+  const isSpecial = !pixData.bonus || pixData.bonus === "null" || pixData.bonus === "";
+
+  const baseNum = isSpecial ? 0 : parseInt(String(pixData.base).replace(/\D/g, "")) || 0;
+  const bonusNum = isSpecial ? 0 : parseInt(String(pixData.bonus).replace(/\D/g, "")) || 0;
+  const total = isSpecial ? 0 : baseNum + bonusNum;
 
   sessionStorage.setItem("pixCheckout", JSON.stringify({
     ...pixData,
-    totalAmount: total
+    totalAmount: isSpecial ? pixData.price : total
   }));
 
   return (
@@ -159,33 +159,39 @@ export default function PixPage() {
 
           <div className="summary">
             <p>
-              <span>Total</span>
+              <span>{isSpecial ? "Produto selecionado" : "Total"}</span>
               <span>
-                <img src="/point.webp" className="icon" />
-                {isUpsell ? `Ofertas - R$ ${total.toFixed(2).replace(".", ",")}` : total}
+                {isSpecial ? pixData.base : (
+                  <>
+                    <img src="/point.webp" className="icon" />
+                    {total}
+                  </>
+                )}
               </span>
             </p>
 
-            <div className="bonus-box">
-              <p>
-                <span>Preço Original</span>
-                <span>
-                  <img src="/point.webp" className="icon" />
-                  {isUpsell ? "N/A" : pixData.base}
-                </span>
-              </p>
-              <p>
-                <span>+ Bônus Geral</span>
-                <span>
-                  <img src="/point.webp" className="icon" />
-                  {isUpsell ? "N/A" : pixData.bonus}
-                </span>
-              </p>
-            </div>
+            {!isSpecial && (
+              <div className="bonus-box">
+                <p>
+                  <span>Preço Original</span>
+                  <span>
+                    <img src="/point.webp" className="icon" />
+                    {pixData.base}
+                  </span>
+                </p>
+                <p>
+                  <span>+ Bônus Geral</span>
+                  <span>
+                    <img src="/point.webp" className="icon" />
+                    {pixData.bonus}
+                  </span>
+                </p>
+              </div>
+            )}
 
             <p className="info-text">
-              {isUpsell
-                ? "Esta oferta exclusiva de skins será liberada após a confirmação do pagamento."
+              {isSpecial
+                ? "Este produto especial será liberado após a confirmação do pagamento."
                 : "Os diamantes são válidos apenas para a região do Brasil e serão creditados diretamente na conta de jogo."}
             </p>
 
@@ -194,13 +200,13 @@ export default function PixPage() {
             <div className="summary-details">
               <p>
                 <span>Preço</span>
-                <strong>R$ {isUpsell ? total.toFixed(2).replace(".", ",") : pixData.price}</strong>
+                <strong>R$ {String(pixData.price).replace(".", ",")}</strong>
               </p>
               <p>
                 <span>Método de pagamento</span>
                 <strong>{pixData.payment || "Pix"}</strong>
               </p>
-              {!isUpsell && (
+              {!isSpecial && (
                 <p>
                   <span>Nome do Jogador</span>
                   <strong>{pixData.user}</strong>
@@ -242,7 +248,7 @@ export default function PixPage() {
               Copiar Código
             </button>
 
-            {/* Instruções (mantidas SEM alteração no design) */}
+            {/* Instruções */}
             <div className="instructions">
               <p>
                 <strong>Para realizar o pagamento siga os passos abaixo:</strong>
@@ -254,8 +260,8 @@ export default function PixPage() {
               </ol>
               <p>Seu pedido está sendo processado pelo nosso parceiro BuckPay.</p>
               <p>
-                {isUpsell
-                  ? "Você receberá suas skins após a confirmação do pagamento."
+                {isSpecial
+                  ? "Você receberá seu produto após a confirmação do pagamento."
                   : "Você receberá seus diamantes após recebermos a confirmação do pagamento."}
               </p>
               <p>Em caso de dúvidas entre em contato com o suporte.</p>

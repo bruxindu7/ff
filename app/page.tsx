@@ -99,77 +99,107 @@ export default function Home() {
       }
     }
 
-    // ==========================
-    // Seleção dos valores normais
-    // ==========================
-    document.querySelectorAll(".value").forEach((button) => {
-      button.addEventListener("click", () => {
-        selectedPrice = (button as HTMLElement).dataset.price || null;
-        selectedBase = button.textContent?.trim() || null;
-        selectedBonus = (button as HTMLElement).dataset.bonus || null;
+// ==========================
+// Seleção dos valores normais
+// ==========================
+document.querySelectorAll(".value").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedPrice = (button as HTMLElement).dataset.price || null;
+    selectedBase = button.textContent?.trim() || null;
+    selectedBonus = (button as HTMLElement).dataset.bonus || null;
 
-        document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
-        document.querySelectorAll(".value").forEach((b) => b.classList.remove("selected"));
-        button.classList.add("selected");
+    document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
+    document.querySelectorAll(".value").forEach((b) => b.classList.remove("selected"));
+    button.classList.add("selected");
 
-        document.querySelectorAll<HTMLElement>(".pay-info").forEach((info) => {
-          info.innerHTML = `
-            <div style="font-weight:600; color:#111">R$ ${selectedPrice}</div>
-            <div style="font-size:13px; color:#ef4444; display:flex; align-items:center; gap:4px;">
-              <img src="point.webp" style="width:14px;vertical-align:middle">
-              ${selectedBase} + ${selectedBonus}
-            </div>
-          `;
-        });
-
-        document.getElementById("checkoutBonus")!.innerHTML = `
-          <span style="display:flex; align-items:center; gap:6px; font-size:15px; color:#111;">
-            <img src="point.webp" style="width:18px; height:18px; vertical-align:middle;">
-            ${selectedBase} + ${selectedBonus}
-          </span>
-        `;
-        document.getElementById("checkoutPrice")!.innerHTML = `Total: R$ ${selectedPrice}`;
-        (document.getElementById("checkoutBar") as HTMLElement).style.display = "flex";
-
-        checkCheckoutReady();
-      });
+    // ========= Métodos de pagamento =========
+    document.querySelectorAll<HTMLElement>(".pay-info").forEach((info) => {
+      info.innerHTML = `
+        <div style="font-weight:600; color:#111">R$ ${selectedPrice}</div>
+        <div style="font-size:13px; color:#FF7A00; display:flex; align-items:center; gap:4px;">
+          + <span style="font-weight:600;">Bônus</span>
+          <img src="point.webp" style="width:16px; vertical-align:middle">
+          ${selectedBonus}
+        </div>
+      `;
     });
 
-    // ==========================
-    // Seleção dos planos especiais
-    // ==========================
-    document.querySelectorAll(".plan").forEach((button) => {
-      button.addEventListener("click", () => {
-        selectedPrice = (button as HTMLElement).dataset.price || null;
-        selectedBase = (button as HTMLElement).dataset.base || null;
-        selectedBonus = (button as HTMLElement).dataset.bonus || null;
+    // ========= Checkout inferior =========
+    document.getElementById("checkoutBonus")!.innerHTML = `
+      <span style="display:flex; align-items:center; gap:6px; font-size:15px; color:#FF7A00;">
+        ${selectedBase} + ${selectedBonus}
+        <img src="point.webp" style="width:18px; vertical-align:middle">
+      </span>
+    `;
 
-        document.querySelectorAll(".value").forEach((v) => v.classList.remove("selected"));
-        document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
-        button.classList.add("selected");
+    document.getElementById("checkoutPrice")!.innerHTML = `Total: R$ ${selectedPrice}`;
+    (document.getElementById("checkoutBar") as HTMLElement).style.display = "flex";
 
-        document.querySelectorAll<HTMLElement>(".pay-info").forEach((info) => {
-          info.innerHTML = `
-            <div style="font-weight:600; color:#111">R$ ${selectedPrice}</div>
-            <div style="font-size:13px; color:#ef4444; display:flex; align-items:center; gap:4px;">
-              <img src="point.webp" style="width:14px;vertical-align:middle">
-              ${selectedBase} + ${selectedBonus}
-            </div>
-          `;
-        });
+    checkCheckoutReady();
+  });
+});
+// ==========================
+// Seleção dos planos especiais
+// ==========================
+document.querySelectorAll(".plan").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedPrice = (button as HTMLElement).dataset.price || null;
+    selectedBase = (button as HTMLElement).dataset.base || null;
+    selectedBonus = (button as HTMLElement).dataset.bonus || null;
 
-        document.getElementById("checkoutBonus")!.innerHTML = `
-          <span style="display:flex; align-items:center; gap:6px; font-size:15px; color:#111;">
-            <img src="point.webp" style="width:18px; height:18px; vertical-align:middle;">
-            ${selectedBase} + ${selectedBonus}
-          </span>
+    const isSpecial = (button as HTMLElement).dataset.special === "true";
+    const productName = button.querySelector(".plan-title")?.textContent?.trim() || "";
+
+    document.querySelectorAll(".value").forEach((v) => v.classList.remove("selected"));
+    document.querySelectorAll(".plan").forEach((p) => p.classList.remove("selected"));
+    button.classList.add("selected");
+
+    // Atualiza métodos de pagamento
+    document.querySelectorAll<HTMLElement>(".pay-info").forEach((info) => {
+      if (isSpecial) {
+        // Só mostra preço centralizado
+        info.innerHTML = `
+          <div style="font-weight:600; color:#111; margin-bottom:10px; text-align:center;">
+            R$ ${selectedPrice}
+          </div>
         `;
-        document.getElementById("checkoutPrice")!.innerHTML = `Total: R$ ${selectedPrice}`;
-        (document.getElementById("checkoutBar") as HTMLElement).style.display = "flex";
-
-        checkCheckoutReady();
-      });
+      } else {
+        // Mostra preço + bônus normal
+        info.innerHTML = `
+          <div style="font-weight:600; color:#111; margin-bottom:2px;">R$ ${selectedPrice}</div>
+          <div style="font-size:13px; color:#FFA700; display:flex; align-items:center; gap:4px; justify-content:center;">
+            <img src="point.webp" style="width:14px;vertical-align:middle">
+            ${selectedBase} + ${selectedBonus}
+          </div>
+        `;
+      }
     });
+
+    // Atualiza checkout inferior
+    if (isSpecial) {
+      // Mostra só o nome do produto e o preço
+      document.getElementById("checkoutBonus")!.innerHTML = `
+        <span style="display:flex; flex-direction:column; gap:4px; font-size:15px; color:#111; text-align:center;">
+          <span style="font-weight:600;">${productName}</span>
+        </span>
+      `;
+    } else {
+      // Mantém base + bônus + diamante
+      document.getElementById("checkoutBonus")!.innerHTML = `
+        <span style="display:flex; align-items:center; gap:6px; font-size:15px; color:#111;">
+          <img src="point.webp" style="width:18px; height:18px; vertical-align:middle;">
+          ${selectedBase} + ${selectedBonus}
+        </span>
+      `;
+    }
+
+    // Sempre mostra o preço total
+    document.getElementById("checkoutPrice")!.innerHTML = `Total: R$ ${selectedPrice}`;
+    (document.getElementById("checkoutBar") as HTMLElement).style.display = "flex";
+
+    checkCheckoutReady();
+  });
+});
 
     // ==========================
     // Seleção dos métodos de pagamento
@@ -382,33 +412,47 @@ try {
         </div>
       </div>
 
-           {/* SELEÇÃO DE JOGOS */}
-      <section className="games">
-        <div className="container games-wrap">
-          <h3>Seleção de jogos</h3>
-          <div className="app-grid">
-            <button className="app selected" aria-label="Free Fire">
-              <span className="app-icon">
-                <Image src="/icon.webp" alt="Free Fire" width={50} height={50} />
-              </span>
-              <span className="app-name">Free Fire</span>
-            </button>
-            <button className="app" aria-label="Delta Force">
-              <span className="app-icon">
-                <Image src="/delta.webp" alt="Delta Force" width={50} height={50} />
-              </span>
-              <span className="app-name">Delta Force</span>
-            </button>
-          </div>
-        </div>
-      </section>
+{/* SELEÇÃO DE JOGOS */}
+<section className="games">
+  <div className="container games-wrap">
+    <h3>Seleção de jogos</h3>
+    <div className="app-grid">
+      <button className="app selected" aria-label="Free Fire">
+        <span className="app-icon">
+          <Image 
+            src="/icon.webp" 
+            alt="Free Fire" 
+            fill 
+            quality={100} 
+            className="object-cover rounded-[16px]" 
+          />
+        </span>
+        <span className="app-name">Free Fire</span>
+      </button>
+
+      <button className="app" aria-label="Delta Force">
+        <span className="app-icon">
+          <Image 
+            src="/delta.webp" 
+            alt="Delta Force" 
+            fill 
+            quality={100} 
+            className="object-cover rounded-[16px]" 
+          />
+        </span>
+        <span className="app-name">Delta Force</span>
+      </button>
+    </div>
+  </div>
+</section>
+
 
          {/* HERO */}
       <section className="hero">
         <div className="container">
           <div className="hero-card" style={{ backgroundImage: "url('/FF-f997537d.jpg')" }}>
             <div className="hero-content">
-              <Image src="/icon.webp" alt="Free Fire" width={60} height={60} className="hero-icon" />
+<Image src="/icon.webp" alt="Free Fire" width={72} height={72} className="hero-icon" />
               <div>
                 <h3 className="hero-title">Free Fire</h3>
                 <div className="hero-meta">
@@ -445,8 +489,8 @@ try {
         <button className="btn-resgatar">Resgatar</button>
       </div>
       <div className="promo-icon">
-        <Image src="/cubomagic.webp" alt="Cubo Mágico" width={60} height={60} />
-        <div className="icon-label">Cubo Mágico</div>
+        <Image src="/arma.png" alt="Pacote de Armas" width={80} height={80} />
+        <div className="icon-label">Pacote de Armas</div>
       </div>
     </div>
   </section>
@@ -602,50 +646,128 @@ try {
     </div>
 <h5 className="section-title">Ofertas especiais</h5>
 <div className="offers">
-  <button className="plan" data-price="19,99" data-base="1.000" data-bonus="300">
-    <Image 
-      src="/semanal.webp" 
-      alt="Assinatura semanal" 
-      width={400} 
-      height={280} 
-      quality={100} 
-    />
+  <button className="plan" data-price="19,99" data-base="1.000" data-bonus="300" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/semanal.webp" 
+          alt="Assinatura semanal" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
     <div className="plan-title">Assinatura Semanal</div>
   </button>
 
-  <button className="plan" data-price="32,90" data-base="2.000" data-bonus="600">
-    <Image 
-      src="/mensal.webp" 
-      alt="Assinatura mensal" 
-      width={400} 
-      height={280} 
-      quality={100} 
-    />
+  <button className="plan" data-price="32,90" data-base="2.000" data-bonus="600" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/mensal.webp" 
+          alt="Assinatura mensal" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
     <div className="plan-title">Assinatura Mensal</div>
   </button>
 
-  <button className="plan" data-price="34,90" data-base="1.000" data-bonus="Passe Booyah">
-    <Image 
-      src="/booyah.webp" 
-      alt="Passe Booyah" 
-      width={400} 
-      height={280} 
-      quality={100} 
-    />
-    <div className="plan-title">Passe Booyah</div>
+  <button className="plan" data-price="16,90" data-base="Passe Booyah Premium Plus" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/premiumplus.png" 
+          alt="Passe Booyah Premium Plus" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
+    <div className="plan-title">Passe Booyah Premium Plus</div>
   </button>
 
-  <button className="plan" data-price="74,80" data-base="7.800" data-bonus="5.600">
-    <Image 
-      src="/nivel.webp" 
-      alt="Passe de Nível" 
-      width={400} 
-      height={280} 
-      quality={100} 
-    />
-    <div className="plan-title">Passe de Nível</div>
+  <button className="plan" data-price="7,49" data-base="Trilha da Evolução - 3 dias" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/3days.png" 
+          alt="Trilha da Evolução 3d" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
+    <div className="plan-title">Trilha da Evolução - 3 dias</div>
+  </button>
+
+  <button className="plan" data-price="12,09" data-base="Trilha da Evolução - 7 dias"data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/7days.png" 
+          alt="Trilha da Evolução - 7 dias" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
+    <div className="plan-title">Trilha da Evolução - 7 dias</div>
+  </button>
+
+  <button className="plan" data-price="19,99" data-base="Trilha da Evolução - 30 dias" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/30days.png" 
+          alt="Trilha da Evolução - 30 dias" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
+    <div className="plan-title">Trilha da Evolução - 30 dias</div>
+  </button>
+
+  <button className="plan" data-price="99,90" data-base="Semanal Econômica" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/wlite.png" 
+          alt="Semanal Econômica" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
+    <div className="plan-title">Semanal Econômica</div>
+  </button>
+
+  <button className="plan" data-price="34,90" data-base="1.000" data-bonus="Passe Booyah" data-special="true">
+    <span className="plan-img">
+      <span className="plan-img-inner">
+        <Image 
+          src="/booyah.webp" 
+          alt="Passe Booyah" 
+          fill
+          quality={100}
+          className="object-contain rounded-md"
+        />
+      </span>
+    </span>
+    <div className="plan-title">Passe Booyah</div>
   </button>
 </div>
+
+
 
   </section>
 
@@ -805,7 +927,7 @@ try {
 
     <h3 className="modal-title">Quase lá para o seu Item Grátis!</h3>
     <p className="modal-desc">
-      Finalize sua compra para ganhar o <strong>Cubo Mágico</strong>.
+      Finalize sua compra para ganhar o <strong>Pacote de Armas</strong>.
     </p>
 
     <div className="modal-actions" style={{ justifyContent: "center" }}>

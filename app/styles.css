@@ -195,8 +195,8 @@ header {
 
 /* === Seleção de jogos (estilo igual à imagem) === */
 .games { background:#f3f4f6; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.games-wrap{ padding:26px 0 14px; }
-.games h3{ margin:0 0 18px; font-size:22px; font-weight:800; color:#0f172a; }
+.games-wrap{ padding:18px 0 14px; }
+.games h3{ margin:0 0 18px; font-size:20px; font-weight:800; color:#28292F; }
 
 /* grid dos apps */
 .app-grid{ display:flex; gap:28px; flex-wrap:wrap; }
@@ -230,22 +230,13 @@ header {
 .app:hover .app-icon{ border-color:#d1d5db; box-shadow:0 6px 16px rgba(0,0,0,.10); transform:translateY(-1px); transition:.18s; }
 
 /* Hero do jogo */
-.hero { padding:18px 0 0; }
+.hero { padding:46px 0 0; }
 .hero-card{
   position: relative;
   height: 140px;
-  border-radius: 18px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: var(--shadow);
   background: #222 center/cover no-repeat;
-}
-.hero-card::before{
-  content:""; position:absolute; inset:0;
-  background: linear-gradient(90deg,
-    rgba(30,20,20,.80) 0%,
-    rgba(30,20,20,.55) 30%,
-    rgba(30,20,20,.20) 60%,
-    rgba(30,20,20,0) 100%);
 }
 .hero-content{
   position:absolute;
@@ -303,7 +294,7 @@ header {
 
 .promo-item {
   width: 550px;              /* mais largo que antes */
-  margin: 20px 0;            /* só espaço vertical (fica colado à esquerda) */
+  margin: 22px 0;            /* só espaço vertical (fica colado à esquerda) */
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,.05);
@@ -320,7 +311,6 @@ header {
 .promo-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
 .promo-text strong {
@@ -329,12 +319,12 @@ header {
 }
 
 .promo-text span {
-  font-size: 14px;
+  font-size: 12px;
   color: #6b7280;
 }
 
 .btn-resgatar {
-  margin-top: 6px;
+  margin-top: 12px;
   background: #d60000;
   color: #e7e7e7;
   border: none;
@@ -362,8 +352,8 @@ header {
 }
 
 .promo-icon img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 50px;
   border-radius: 10px;
 }
 
@@ -513,14 +503,6 @@ header {
   width: 20px;
   height: 20px;
   object-fit: contain;
-}
-
-
-/* Ofertas especiais */
-.offers {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 18px;
 }
 
 
@@ -726,7 +708,7 @@ header {
 
 .pay {
   background: #fff;
-  border: 1px solid var(--line);
+    border: 1px solid #cfcfcf; /* 🔥 borda adicionada */
   border-radius: 12px;
   height: 90px;
   display: flex;
@@ -766,6 +748,7 @@ header {
   width: 100%;
   background: #0f0f0f;   /* fundo preto atrás */
   padding: 24px 0;
+  border-bottom: 7px solid #ffaf19; /* 🔥 borda abaixo */
 }
 
 .carousel {
@@ -910,12 +893,26 @@ header {
   flex-direction: column;
   align-items: center;
 }
-
-.plan img {
+.plan-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   width: 100%;
   height: 140px;
-  object-fit: cover;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px; /* 🔥 espaço interno */
+  box-sizing: border-box;
 }
+
+.plan-img-inner {
+  position: relative;
+  width: 100%;   /* 🔥 controla o tamanho da imagem */
+  height: 100%;
+}
+
+
 
 .plan .plan-title {
   color: #030712;
@@ -995,8 +992,6 @@ main {
     .offers{display:grid; grid-template-columns: repeat(4, 1fr); gap:14px}
     .offer{display:flex; flex-direction:column; gap:8px}
     .offer .thumb{border-radius:12px; overflow:hidden; border:1px solid var(--line); background:#fff}
-    .offer .thumb img{height:120px; width:100%; object-fit:cover}
-    .offer small{color:var(--muted)}
 
     /* Pagamentos */
     .payments{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}

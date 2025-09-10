@@ -13,17 +13,20 @@ export default function Checkout() {
       sessionStorage.getItem("checkoutData") || "{}"
     );
 
-    const { price, base, bonus, payment, user } = checkoutData;
+   const { price, base, bonus, payment, user } = checkoutData;
 
-    // Detecta se base é numérico
-    const baseNum = parseInt((base || "").replace(/\D/g, "")) || 0;
-    const bonusNum = parseInt((bonus || "").replace(/\D/g, "")) || 0;
-    let total: string | number = "";
-    if (!isNaN(baseNum) && !isNaN(bonusNum)) {
-      total = baseNum + bonusNum;
-    } else {
-      total = base;
-    }
+// Detecta se é produto especial pelo bonus nulo
+const isSpecial = !bonus || bonus === "null";
+
+// Se não for especial → calcula total
+let total: string | number = "";
+if (!isSpecial) {
+  const baseNum = parseInt((base || "").replace(/\D/g, "")) || 0;
+  const bonusNum = parseInt((bonus || "").replace(/\D/g, "")) || 0;
+  total = baseNum + bonusNum;
+} else {
+  total = base; // Produto especial → só nome
+}
 
 const elTotal = document.getElementById("summaryTotal");
 const elBase = document.getElementById("summaryBase");
@@ -35,9 +38,38 @@ const elUser = document.getElementById("summaryUser");
 // 🔥 sempre normaliza o price
 const priceNumber = parseFloat(String(price).replace(",", ".")) || 0;
 
-if (elTotal) elTotal.innerHTML = `<img src="point.webp" class="icon">${total}`;
-if (elBase) elBase.innerHTML = `<img src="point.webp" class="icon">${base}`;
-if (elBonus) elBonus.innerHTML = `<img src="point.webp" class="icon">${bonus}`;
+if (isSpecial) {
+  // 🚀 Produto especial (sem diamantes)
+  if (elTotal) {
+    const parent = elTotal.parentElement;
+    if (parent) {
+      const label = parent.querySelector("span:first-child");
+      if (label) label.textContent = "Produto selecionado";
+    }
+    elTotal.textContent = base; // só nome do produto
+  }
+  if (elBase) elBase.parentElement!.style.display = "none";
+  if (elBonus) elBonus.parentElement!.style.display = "none";
+} else {
+  // 🚀 Produto normal (diamantes)
+  if (elTotal) {
+    const parent = elTotal.parentElement;
+    if (parent) {
+      const label = parent.querySelector("span:first-child");
+      if (label) label.textContent = "Total";
+    }
+    elTotal.innerHTML = `<img src="point.webp" class="icon">${total}`;
+  }
+  if (elBase) {
+    elBase.parentElement!.style.display = "";
+    elBase.innerHTML = `<img src="point.webp" class="icon">${base}`;
+  }
+  if (elBonus) {
+    elBonus.parentElement!.style.display = "";
+    elBonus.innerHTML = `<img src="point.webp" class="icon">${bonus}`;
+  }
+}
+
 if (elPrice) elPrice.textContent = `R$ ${priceNumber.toFixed(2)}`;
 if (elPayment) elPayment.textContent = payment;
 
