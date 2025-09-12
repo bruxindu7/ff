@@ -26,18 +26,19 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17475419419"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'AW-17475419419');
-            `,
-          }}
-        />
+   {/* Google tag (gtag.js) */}
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17521187394"></script>
+<script
+  dangerouslySetInnerHTML={{
+    __html: `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17521187394');
+    `,
+  }}
+/>
+
 
         {/* Meta Pixel Code */}
         <script
