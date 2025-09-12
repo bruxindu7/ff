@@ -63,7 +63,7 @@ export default function PixPage() {
           const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
           if (typeof window !== "undefined" && (window as any).gtag) {
 (window as any).gtag("event", "conversion", {
-  send_to: "AW-17521187394/FrixCJz-wJkbEMK04KJB",
+  send_to: "AW-17521187394/a2Z0CLqZy5kbEMK04KJB",
   value: priceNumber,
   currency: "BRL",
   transaction_id: "", // se você tiver o id real da transação, pode preencher aqui
