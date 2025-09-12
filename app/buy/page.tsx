@@ -62,11 +62,13 @@ export default function PixPage() {
 
           const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
           if (typeof window !== "undefined" && (window as any).gtag) {
-            (window as any).gtag("event", "conversion", {
-              send_to: "AW-17475419419/kZsRCKDJmpYbEJv69oxB",
-              value: priceNumber,
-              currency: "BRL",
-            });
+(window as any).gtag("event", "conversion", {
+  send_to: "AW-17521187394/FrixCJz-wJkbEMK04KJB",
+  value: priceNumber,
+  currency: "BRL",
+  transaction_id: "", // se você tiver o id real da transação, pode preencher aqui
+});
+
           }
 
           const upsellPages = ["/upsell", "/upsell-2", "/upsell-3"];
