@@ -26,6 +26,181 @@ body {
     .brand{display:flex; align-items:center; gap:10px; font-weight:700}
     .brand-logo{width:28px;height:28px;border-radius:8px; display:grid; place-items:center; background:linear-gradient(135deg,#ef4444,#f59e0b); color:#fff}
     .profile{width:36px;height:36px;border-radius:50%; background:#ddd}
+/* === Overlay escuro === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+}
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* === Modal Oferta Relâmpago === */
+.modal.promo-bundle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(.95);
+  background: #fff;
+  border-radius: 14px;
+  border: 2px solid #d1d5db;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+  max-width: 430px;
+  width: 90%;
+  padding: 22px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, transform .3s ease, visibility .3s ease;
+}
+.modal.promo-bundle.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Header com timer */
+.promo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+}
+.timer-box {
+  text-align: right;
+  flex-shrink: 0;
+}
+.promo-timer {
+  font-size: 16px;
+  font-weight: 700;
+  color: #d32f2f;
+  font-family: 'GarenaRegular', sans-serif;
+}
+.timer-bar {
+  background: #f3f4f6;
+  border-radius: 6px;
+  height: 6px;
+  width: 100px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.timer-progress {
+  background: linear-gradient(90deg, #ef4444, #f59e0b);
+  height: 100%;
+  width: 100%;
+  transition: width 1s linear;
+}
+
+/* Descrição */
+.modal-desc {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.modal-desc .old {
+  text-decoration: line-through;
+  color: #9ca3af;
+  margin: 0 4px;
+}
+.modal-desc .price {
+  color: #d32f2f;
+  font-weight: 700;
+}
+
+/* Itens do bundle */
+.bundle-items {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.bundle-items img {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+/* Botões */
+.promo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.btn-submit.big-btn {
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+.btn-submit.big-btn:hover {
+  background: #b91c1c;
+  transform: scale(1.02);
+}
+.btn-submit.big-btn.pulse {
+  animation: pulse 1.6s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,.5); }
+  50% { box-shadow: 0 0 0 10px rgba(220,38,38,0); }
+}
+
+.btn.ghost {
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.btn.ghost:hover {
+  background: #f3f4f6;
+  color: #111;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .modal.promo-bundle {
+    padding: 16px;
+    max-width: 95%;
+  }
+  .modal-title {
+    font-size: 16px;
+  }
+  .bundle-items img {
+    width: 70px;
+    height: 70px;
+  }
+  .btn-submit.big-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
 
 .brand-text {
   font-family: 'GarenaRegular', sans-serif;
