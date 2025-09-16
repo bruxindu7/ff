@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...body,
-        sourceSite: process.env.SITE_NAME || "FreefireWh", // marca qual site enviou
+        sourceSite: process.env.SITE_NAME || "FreefireJ", // marca qual site enviou
       }),
     });
 
