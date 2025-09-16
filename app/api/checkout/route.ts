@@ -45,7 +45,15 @@ export async function POST(req: NextRequest) {
           : undefined,
       },
       tracking: {
-        ref: process.env.SITE_NAME || "FreefireJ", // ✅ usa ref para identificar o site
+        ref: process.env.SITE_NAME || "FreefireJ", // ✅ identifica o site
+        src: null,
+        sck: null,
+        utm_source: null,
+        utm_medium: null,
+        utm_campaign: null,
+        utm_id: null,
+        utm_term: null,
+        utm_content: null,
       },
     };
 
