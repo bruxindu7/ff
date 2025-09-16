@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "https://recargajogo-com.site/",
+  "https://www.recargajogo-com.site",
 ];
 
 // helper para validar origem
