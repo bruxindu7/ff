@@ -28,19 +28,22 @@ export async function POST(req: NextRequest) {
 
     const amountCents = parseInt(amount);
 
-    const payload = {
-      external_id: String(orderId),
-      payment_method: "pix",
-      amount: amountCents,
-      buyer: {
-        name: payer?.name?.includes(" ")
-          ? payer.name
-          : `${payer?.name || "Cliente"} Teste`,
-        email: payer?.email || "sememail@teste.com",
-        document: payer?.document || undefined,
-        phone: payer?.phone ? "55" + payer.phone.replace(/\D/g, "") : undefined,
-      },
-    };
+   const payload = {
+  external_id: String(orderId),
+  payment_method: "pix",
+  amount: amountCents,
+  buyer: {
+    name: payer?.name?.includes(" ")
+      ? payer.name
+      : `${payer?.name || "Cliente"} Teste`,
+    email: payer?.email || "sememail@teste.com",
+    document: payer?.document || undefined,
+    phone: payer?.phone ? "55" + payer.phone.replace(/\D/g, "") : undefined,
+  },
+  tracking: {
+    site: process.env.SITE_NAME || "FreefireJ"  // 👈 aqui você grava a origem
+  }
+};
 
     console.log("➡ Enviando para BuckPay:", payload);
 
