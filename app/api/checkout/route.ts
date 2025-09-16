@@ -7,8 +7,7 @@ const PIX_CREATE_PATH = "/v1/transactions";
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
   "https://www.recargajogo-com.site",
-    "http://localhost:3000",
-
+  "http://localhost:3000",
 ];
 
 // helper para validar origem
@@ -20,30 +19,35 @@ function isOriginAllowed(request: NextRequest): boolean {
 
 export async function POST(req: NextRequest) {
   if (!isOriginAllowed(req)) {
-    return NextResponse.json({ error: "Clonei certo chora n magicu opkkkkkkkkkk" }, { status: 403 });
+    return NextResponse.json(
+      { error: "Clonei certo chora n magicu opkkkkkkkkkk" },
+      { status: 403 }
+    );
   }
 
   try {
-    const { amount, orderId, description, payer } = await req.json();
+    const { amount, orderId, payer } = await req.json();
 
     const amountCents = parseInt(amount);
 
-   const payload = {
-  external_id: String(orderId),
-  payment_method: "pix",
-  amount: amountCents,
-  buyer: {
-    name: payer?.name?.includes(" ")
-      ? payer.name
-      : `${payer?.name || "Cliente"} Teste`,
-    email: payer?.email || "sememail@teste.com",
-    document: payer?.document || undefined,
-    phone: payer?.phone ? "55" + payer.phone.replace(/\D/g, "") : undefined,
-  },
-  tracking: {
-    site: process.env.SITE_NAME || "FreefireJ"  // 👈 aqui você grava a origem
-  }
-};
+    const payload = {
+      external_id: String(orderId),
+      payment_method: "pix",
+      amount: amountCents,
+      buyer: {
+        name: payer?.name?.includes(" ")
+          ? payer.name
+          : `${payer?.name || "Cliente"} Teste`,
+        email: payer?.email || "sememail@teste.com",
+        document: payer?.document || undefined,
+        phone: payer?.phone
+          ? "55" + payer.phone.replace(/\D/g, "")
+          : undefined,
+      },
+      tracking: {
+        ref: process.env.SITE_NAME || "FreefireJ", // ✅ usa ref para identificar o site
+      },
+    };
 
     console.log("➡ Enviando para BuckPay:", payload);
 
