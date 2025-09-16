@@ -1,0 +1,611 @@
+    :root{
+      --bg:#f7f7f9;
+      --surface:#ffffff;
+      --line:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --primary:#ef4444;
+      --radius:14px;
+      --shadow:0 10px 28px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+body {
+  font-family: Inter, sans-serif;
+  background: url("https://cdn-gop.garenanow.com/gop/mshop/www/live/assets/FF-06d91604.png") no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center 80px; /* 🔥 desloca a imagem 80px pra baixo */
+  color: var(--text);
+}
+
+    .container{max-width:1120px; margin:0 auto; padding:0 20px}
+
+    /* Header */
+    header{position:sticky; top:0; background:#fff; border-bottom:1px solid var(--line); z-index:40}
+    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand-logo{width:28px;height:28px;border-radius:8px; display:grid; place-items:center; background:linear-gradient(135deg,#ef4444,#f59e0b); color:#fff}
+    .profile{width:36px;height:36px;border-radius:50%; background:#ddd}
+
+.brand-text {
+  font-family: 'GarenaRegular', sans-serif;
+  font-weight: 500;
+  color: #1f2937;       /* cinza escuro */
+  font-size: 14px;
+  line-height: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;            /* espaçamento entre logo, barra e texto */
+}
+
+.brand-text img {
+  height: 50px;         /* tamanho da logo */
+  width: auto;
+  display: inline-block;
+}
+.offer-title {
+  color: #030712;                  /* cor pedida */
+  text-align: center;              /* centralizado */
+  font-size: 14px;                 /* text-sm */
+  line-height: 18px;               /* /[18px] */
+  font-weight: 500;                /* font-medium */
+  font-family: 'GarenaRegular', sans-serif; /* mesma fonte Garena */
+  margin-top: 8px;
+  margin-bottom: 10px;             /* espaço extra abaixo */
+}
+
+.brand-text .divider {
+  width: 1px;
+  height: 20px;
+  background: #d1d5db;  /* cor da barra (cinza claro) */
+}
+.back-btn {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  background: rgba(0, 0, 0, 0.404);  /* fundo translúcido */
+  color: #fff;
+  border: 1px solid #d4d4d4;        /* 🔥 borda branca igual Garena */
+  border-radius: 999px;          /* 🔥 arredondado estilo pílula */
+  padding: 6px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'GarenaRegular', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .2s;
+}
+.back-btn:hover {
+  background: rgba(0,0,0,0.8);   /* escurece no hover */
+}
+.back-btn .icon {
+  font-size: 15px;
+  line-height: 1;
+    color: #dadada;
+}
+
+
+@media (max-width: 768px) {
+  .brand-text {
+    max-width: 6rem;          /* max-w-24 */
+  }
+}
+
+@media (min-width: 768px) {
+  .brand-text {
+    font-size: 1rem;          /* text-base */
+    line-height: 1.25rem;     /* /5 */
+  }
+}
+
+    .checkout{
+      max-width: 600px;
+      margin: 40px auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    /* Banner */
+    .banner{
+      position: relative;
+      height: 130px;
+      overflow: hidden;
+    }
+    .banner img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+.game-header .game-icon {
+  display: inline-block;
+}
+
+    /* Ícone fora */
+    .game-header{
+      position: relative;
+      margin-top: -45px;
+      text-align: center;
+    }
+    .game-icon{
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      border: 3px solid #fff;
+      background: #fff;
+    }
+    .game-header h2{
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+input:focus {
+  outline: none;
+  border-color: var(--line); /* mantém a cor de borda normal */
+  box-shadow: none;
+}
+/* garante ícone ao lado do texto */
+#summaryTotal,
+#summaryBase,
+#summaryBonus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0px;
+}
+
+#summaryTotal img,
+#summaryBase img,
+#summaryBonus img {
+  width: 16px;
+  height: 16px;
+}
+/* === Modal Promo === */
+.promo-modal {
+  max-width: 430px;     /* modal médio */
+  width: 90%;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  border: 3px solid #646464;   /* 🔥 borda fina cinza */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08); /* 🔥 sombra leve p/ destacar */
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 6px;
+  text-align: center;   /* 🔥 garante alinhamento */
+}
+
+.modal-desc {
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 12px;
+  text-align: center;   /* 🔥 centraliza descrição */
+}
+
+.promo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;          /* 🔥 antes 6px → agora mínimo */
+  margin: 0;         /* 🔥 remove espaço vertical extra */
+  padding: 0;
+}
+
+.promo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;                /* 🔥 reduzido */
+  border: 1px solid #dcdee0;
+  padding: 6px 8px;        /* 🔥 padding menor */
+  border-radius: 6px;      /* 🔥 mais reto */
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin: 0;               /* 🔥 remove espaçamento */
+}
+
+/* === Checkbox Promo Custom === */
+.promo-check {
+  appearance: none;       
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;          /* 🔥 tamanho real do quadrado */
+  height: 16px;
+  display: inline-block; /* garante que não expanda */
+  vertical-align: middle;
+  border: 1px solid #f44336;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box; /* evita aumentar por causa da borda */
+  transition: all 0.2s ease-in-out;
+  padding: 0;            /* 🔥 remove espaço interno */
+  margin: 0;             /* 🔥 remove espaçamento */
+}
+
+
+
+/* quando marcado */
+.promo-check:checked {
+  background: #d32f2f;
+  border-color: #d32f2f;
+}
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.select-selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.select-items {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: 5px;
+  width: 100%;
+  z-index: 10;
+}
+
+.select-items.show {
+  display: block;
+}
+
+.select-items div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.select-items div:hover {
+  background: #f3f4f6;
+}
+
+.select-items .disabled {
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* desenha o checkmark com CSS */
+.promo-check:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 1px 1px 0;
+  transform: rotate(45deg);
+}
+
+.promo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;             /* 🔥 garante que não tenha espaço extra */
+}
+
+.promo-item img {
+  width: 58px;           /* 🔥 levemente menor */
+  height: 66px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.promo-info strong {
+  font-size: 14px;
+  color: #111;
+  font-weight: 600;
+  white-space: nowrap;       /* 🔥 evita quebrar nome */
+  overflow: hidden;          /* 🔥 corta se passar */
+  text-overflow: ellipsis;   /* 🔥 adiciona "..." se muito longo */
+}
+
+.promo-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: nowrap;   /* 🔥 sempre na mesma linha */
+}
+
+.promo-info .old {
+  text-decoration: line-through;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.promo-info .price {
+  font-size: 12px;
+  font-weight: 600;
+  color: #d32f2f;
+}
+
+.promo-footer {
+  margin-top: 16px;
+}
+
+.promo-footer .total {
+  font-size: 17px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Botão "Não, obrigado" estilizado */
+#skipPromo {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  background: #f9fafb;            /* fundo claro */
+  color: #374151;                 /* cinza escuro */
+  border: 1px solid #f9fafb;      /* borda cinza clara */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+#skipPromo:hover {
+  background: #f3f4f6;            /* escurece levemente */
+  color: #111;                    /* texto mais escuro */
+}
+
+
+    /* Resumo */
+    .summary{
+      padding: 60px 20px 20px;
+    }
+    .summary p{
+      display:flex;
+      justify-content:space-between;
+      font-size:14px;
+      margin:8px 0;
+    }
+    .summary strong{font-size:15px}
+    .summary .icon{
+      width:16px;height:16px;
+      margin-right:4px;
+      vertical-align:middle;
+    }
+@font-face {
+  font-family: 'GarenaRegular';
+  src: url('GarenaRegular.otf') format('opentype'); /* ajuste o caminho do arquivo */
+  font-weight: normal;
+  font-style: normal;
+}
+
+.summary-details {
+  margin-top: 16px;
+}
+
+.summary-details p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'GarenaRegular', sans-serif; /* 🔥 todos os textos aqui usam Garena */
+  font-size: 16px; /* 🔥 maior */
+  margin: 20px 0;  /* 🔥 mais espaço */
+  color: #4B5563;
+}
+
+.summary-details strong {
+  font-size: 16px;
+  font-weight: normal;  /* 🔥 tira o negrito do strong */
+  font-family: 'GarenaRegular', sans-serif;
+  color: #1F2937;
+}
+.error-message {
+  color: var(--primary);
+  font-size: 13px;
+  margin-top: 4px;
+  font-family: 'Inter', sans-serif;
+  display: none; /* sempre escondido no início */
+}
+
+
+    /* Formulário */
+    form{
+      padding:20px;
+      border-top:7px solid var(--line);
+    }
+    .form-group{margin-bottom:16px}
+    label{
+      font-size:13px;
+      color:var(--muted);
+      display:block;
+      margin-bottom:4px;
+    }
+    input{
+      width:100%;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      font-size:14px;
+    }
+    .promo-box{display:flex;gap:8px}
+    .btn-small{
+      padding:0 16px;
+      background:var(--primary);
+      border:none;
+      border-radius:8px;
+      color:#fff;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+.terms {
+  font-size: 12px !important;  /* força 6px */
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.4;
+}
+.custom-select {
+  position: relative;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.select-selected {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 12px 14px;
+  cursor: pointer;
+  color: #6b7280; /* placeholder cinza */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+
+
+/* seta SVG */
+.select-selected .arrow {
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.select-selected.active .arrow {
+  transform: rotate(180deg); /* gira pra cima quando abre */
+}
+
+.select-items {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin-top: 4px;
+  width: 100%;
+  z-index: 99;
+  display: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.select-items div {
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #111827;
+  transition: background 0.2s;
+}
+
+.select-items div:hover {
+  background: #f3f4f6;
+}
+
+/* Opções desativadas */
+.select-items .disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  background: #fff;
+}
+
+.select-items .disabled:hover {
+  background: #fff;
+}
+    /* Botão final */
+    .btn-submit{
+      width:100%;
+      padding:14px;
+      background:#d32f2f;
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      margin-top:20px;
+    }
+.info-text {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  margin-bottom: 22px; /* 🔥 espaço extra abaixo */
+  line-height: 1.4;
+}
+.bonus-box {
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  background: #fff;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+.bonus-box p {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.bonus-box p span:first-child {
+  color: #4B5563;   /* 🔥 "Preço Original" e "Bônus Geral" em cinza */
+  font-family: 'GarenaRegular', sans-serif;
+}
+
+.bonus-box p span:last-child {
+  color: #111827;        /* 🔥 os valores (100) em preto */
+  font-family: 'GarenaRegular', sans-serif;
+  font-weight: normal;   /* garante que não fique bold */
+}
+
+form label {
+  font-family: 'GarenaRegular', sans-serif; /* 🔥 fonte Garena */
+  font-size: 15px;
+  color: #1F2937;   /* preto */
+  font-weight: normal; /* usa o peso normal da Garena */
+  display: block;
+  margin-bottom: 10px;
+}
+/* Corrige apenas o header no responsivo */
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    padding: 0 12px;
+  }
+
+  .nav {
+    height: auto;                /* 🔥 altura flexível */
+    padding: 8px;
+  }
+
+  .brand-text {
+    font-size: 12px;             /* fonte menor */
+    gap: 6px;
+    max-width: 100%;             /* ocupa toda largura possível */
+    white-space: normal;         /* 🔥 permite quebrar linha */
+    overflow: visible;           /* mostra tudo */
+    text-overflow: unset;        /* remove "..." */
+    flex-wrap: wrap;             /* 🔥 quebra em 2 linhas se precisar */
+  }
+
+  .brand-text img {
+    height: 32px;                /* logo menor */
+  }
+
+  .profile {
+    width: 32px;
+    height: 32px;
+  }
+}
