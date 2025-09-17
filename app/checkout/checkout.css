@@ -336,212 +336,161 @@ input:focus {
 #summaryBonus img {
   width: 16px;
   height: 16px;
+}/* === Overlay === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
+
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* === Modal Promo === */
-.promo-modal {
-  max-width: 430px;     /* modal médio */
+.modal.promo-bundle {
+  max-width: 430px;
   width: 90%;
   padding: 20px;
   border-radius: 12px;
   background: #fff;
-  border: 3px solid #646464;   /* 🔥 borda fina cinza */
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08); /* 🔥 sombra leve p/ destacar */
+  border: 3px solid #646464;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.promo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .modal-title {
   font-size: 18px;
   font-weight: 700;
   color: #111;
-  margin-bottom: 6px;
-  text-align: center;   /* 🔥 garante alinhamento */
+  text-align: center;
+  flex: 1;
+}
+
+.timer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.promo-timer {
+  font-weight: 600;
+  font-size: 14px;
+  color: #d32f2f;
+  margin-bottom: 4px;
+}
+
+.timer-bar {
+  width: 80px;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.timer-progress {
+  width: 100%;
+  height: 100%;
+  background: #d32f2f;
+  transform-origin: left;
+  transition: width 1s linear;
 }
 
 .modal-desc {
   font-size: 14px;
   color: #4b5563;
-  margin-bottom: 12px;
-  text-align: center;   /* 🔥 centraliza descrição */
+  margin-bottom: 14px;
+  text-align: center;
 }
 
-.promo-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;          /* 🔥 antes 6px → agora mínimo */
-  margin: 0;         /* 🔥 remove espaço vertical extra */
-  padding: 0;
-}
-
-.promo-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;                /* 🔥 reduzido */
-  border: 1px solid #dcdee0;
-  padding: 6px 8px;        /* 🔥 padding menor */
-  border-radius: 6px;      /* 🔥 mais reto */
-  background: #fff;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-  margin: 0;               /* 🔥 remove espaçamento */
-}
-
-/* === Checkbox Promo Custom === */
-.promo-check {
-  appearance: none;       
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 16px;          /* 🔥 tamanho real do quadrado */
-  height: 16px;
-  display: inline-block; /* garante que não expanda */
-  vertical-align: middle;
-  border: 1px solid #f44336;
-  border-radius: 3px;
-  background: #fff;
-  cursor: pointer;
-  position: relative;
-  box-sizing: border-box; /* evita aumentar por causa da borda */
-  transition: all 0.2s ease-in-out;
-  padding: 0;            /* 🔥 remove espaço interno */
-  margin: 0;             /* 🔥 remove espaçamento */
-}
-
-
-
-/* quando marcado */
-.promo-check:checked {
-  background: #d32f2f;
-  border-color: #d32f2f;
-}
-.custom-select {
-  position: relative;
-  width: 100%;
-}
-
-.select-selected {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.select-items {
-  display: none;
-  position: absolute;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  margin-top: 5px;
-  width: 100%;
-  z-index: 10;
-}
-
-.select-items.show {
-  display: block;
-}
-
-.select-items div {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.select-items div:hover {
-  background: #f3f4f6;
-}
-
-.select-items .disabled {
-  color: #aaa;
-  cursor: not-allowed;
-}
-
-/* desenha o checkmark com CSS */
-.promo-check:checked::after {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: 1px;
-  width: 5px;
-  height: 9px;
-  border: solid #fff;
-  border-width: 0 1px 1px 0;
-  transform: rotate(45deg);
-}
-
-.promo-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 0;             /* 🔥 garante que não tenha espaço extra */
-}
-
-.promo-item img {
-  width: 58px;           /* 🔥 levemente menor */
-  height: 66px;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.promo-info strong {
-  font-size: 14px;
-  color: #111;
-  font-weight: 600;
-  white-space: nowrap;       /* 🔥 evita quebrar nome */
-  overflow: hidden;          /* 🔥 corta se passar */
-  text-overflow: ellipsis;   /* 🔥 adiciona "..." se muito longo */
-}
-
-.promo-prices {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  flex-wrap: nowrap;   /* 🔥 sempre na mesma linha */
-}
-
-.promo-info .old {
+.modal-desc .old {
   text-decoration: line-through;
-  font-size: 12px;
   color: #9ca3af;
+  font-size: 13px;
 }
 
-.promo-info .price {
-  font-size: 12px;
-  font-weight: 600;
+.modal-desc .price {
+  font-weight: 700;
   color: #d32f2f;
+  font-size: 15px;
 }
 
-.promo-footer {
-  margin-top: 16px;
-}
-
-.promo-footer .total {
-  font-size: 17px;
+.bundle-items {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-/* Botão "Não, obrigado" estilizado */
+.bundle-items img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* === Ações === */
+.promo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#finalizarPromo {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#finalizarPromo:hover {
+  background: #b71c1c;
+  transform: scale(1.02);
+}
+
 #skipPromo {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
-  background: #f9fafb;            /* fundo claro */
-  color: #374151;                 /* cinza escuro */
-  border: 1px solid #f9fafb;      /* borda cinza clara */
+  background: #f9fafb;
+  color: #374151;
+  border: 1px solid #f3f4f6;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: 8px;
 }
 
 #skipPromo:hover {
-  background: #f3f4f6;            /* escurece levemente */
-  color: #111;                    /* texto mais escuro */
+  background: #f3f4f6;
+  color: #111;
 }
 
 
