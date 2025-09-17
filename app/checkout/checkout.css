@@ -336,23 +336,6 @@ input:focus {
 #summaryBonus img {
   width: 16px;
   height: 16px;
-}/* === Overlay === */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.modal-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 /* === Modal Promo === */

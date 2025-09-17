@@ -915,8 +915,8 @@ sessionStorage.setItem("pixCheckout", JSON.stringify({
   </p>
 
   <div className="bundle-items">
-    <img src="/Screenshot-35.webp" alt="Sombra Roxa" />
-    <img src="/Screenshot-32.webp" alt="Barba do Velho" />
+    <img src="/1.png" alt="Sombra Roxa" />
+    <img src="/2.png" alt="Barba do Velho" />
     <img src="/Screenshot-31.webp" alt="Calça Angelical Azul" />
   </div>
 
