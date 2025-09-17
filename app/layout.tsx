@@ -26,19 +26,21 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-   {/* Google tag (gtag.js) */}
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17521187394"></script>
-<script
-  dangerouslySetInnerHTML={{
-    __html: `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-17521187394');
-    `,
-  }}
-/>
-
+        {/* Google tag (gtag.js) - Novo ID */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17561727277"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-17561727277');
+            `,
+          }}
+        />
 
         {/* Meta Pixel Code */}
         <script
