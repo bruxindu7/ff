@@ -11,9 +11,11 @@ const allowedOrigins = [
 ];
 
 function isOriginAllowed(request: NextRequest): boolean {
-  const origin = request.headers.get("origin") || "";
-  return allowedOrigins.some((allowed) => origin.startsWith(allowed));
+  const referer = request.headers.get("referer");
+  if (!referer) return false;
+  return allowedOrigins.some((origin) => referer.startsWith(origin));
 }
+
 
 export async function POST(req: NextRequest) {
   if (!isOriginAllowed(req)) {
