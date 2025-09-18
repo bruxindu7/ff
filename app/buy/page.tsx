@@ -71,6 +71,17 @@ export default function PixPage() {
 
           }
 
+  // 🚀 Google Ads Conversion Tracking
+  if (typeof window !== "undefined" && (window as any).gtag) {
+    (window as any).gtag("event", "conversion", {
+      send_to: "AW-17561727277/gJNfCIPzt50bEK3iirZB", // seu ID do snippet
+      value: priceNumber,
+      currency: "BRL",
+      transaction_id: data.transactionId || Date.now().toString(), // usa o id real ou fallback
+    });
+  }
+
+
           const upsellPages = ["/upsell", "/upsell-2", "/upsell-3"];
           const randomPage = upsellPages[Math.floor(Math.random() * upsellPages.length)];
           window.location.href = randomPage;
