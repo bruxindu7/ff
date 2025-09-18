@@ -15,6 +15,15 @@ export default function Checkout() {
 
    const { price, base, bonus, payment, user } = checkoutData;
 
+    if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag("event", "conversion", {
+        send_to: "AW-17561727277/gJNfCIPzt50bEK3iirZB",
+        value: 0.0,
+        currency: "BRL",
+        transaction_id: "",
+      });
+    }
+
 // Detecta se é produto especial pelo bonus nulo
 const isSpecial = !bonus || bonus === "null";
 
