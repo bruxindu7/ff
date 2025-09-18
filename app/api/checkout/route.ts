@@ -10,11 +10,9 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 
-// helper para validar origem
 function isOriginAllowed(request: NextRequest): boolean {
-  const referer = request.headers.get("referer");
-  if (!referer) return false;
-  return allowedOrigins.some((origin) => referer.startsWith(origin));
+  const origin = request.headers.get("origin") || "";
+  return allowedOrigins.some((allowed) => origin.startsWith(allowed));
 }
 
 export async function POST(req: NextRequest) {
