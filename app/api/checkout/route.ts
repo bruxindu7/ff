@@ -6,7 +6,7 @@ const PIX_CREATE_PATH = "/v1/transactions";
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "https://www.recargasjogo-mx.site",
+  "https://www.recargasjogs.site",
   "http://localhost:3000",
 ];
 
