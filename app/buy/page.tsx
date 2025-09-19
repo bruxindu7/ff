@@ -61,25 +61,18 @@ export default function PixPage() {
           clearInterval(statusInterval);
 
           const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
-          if (typeof window !== "undefined" && (window as any).gtag) {
-(window as any).gtag("event", "conversion", {
-  send_to: "AW-17521187394/a2Z0CLqZy5kbEMK04KJB",
-  value: priceNumber,
-  currency: "BRL",
-  transaction_id: "", // se você tiver o id real da transação, pode preencher aqui
-});
-
           }
 
-  // 🚀 Google Ads Conversion Tracking
-  if (typeof window !== "undefined" && (window as any).gtag) {
-    (window as any).gtag("event", "conversion", {
-      send_to: "AW-17561727277/gJNfCIPzt50bEK3iirZB", // seu ID do snippet
-      value: priceNumber,
-      currency: "BRL",
-      transaction_id: data.transactionId || Date.now().toString(), // usa o id real ou fallback
-    });
-  }
+          // 🔹 Disparo do snippet oficial de conversão
+          if (typeof window !== "undefined" && (window as any).gtag) {
+            (window as any).gtag("event", "conversion", {
+              send_to: "AW-17580690127/JY3mCLfsyJ0bEM-VkL9B",
+              value: 1.0,
+              currency: "BRL",
+              transaction_id: ""
+            });
+          }
+
 
 
           const upsellPages = ["/upsell", "/upsell-2", "/upsell-3"];
