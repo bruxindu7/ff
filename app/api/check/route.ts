@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const allowedOrigins = [
-  'https://www.recargajogos.work',
+  "https://www.recargajogo.best",
+    "http://localhost:3000",
+
 ];
 
 function isOriginAllowed(request: NextRequest): boolean {

@@ -131,18 +131,6 @@ sessionStorage.setItem("pixCheckout", JSON.stringify(checkoutUpsellPix));
     }
   };
 
-useEffect(() => {
-  if (typeof window !== "undefined" && (window as any).gtag) {
-    (window as any).gtag("event", "conversion", {
-      send_to: "AW-17561727277/oYQ-CKL67ZwbEK3iirZB",
-      value: total || 0.0, // 🔥 valor real da compra
-      currency: "BRL",
-      transaction_id: checkoutData?.orderId || Date.now().toString(), // 🔥 id único
-    });
-  }
-}, [checkoutData, total]);
-
-
   return (
     <main>
 <header>

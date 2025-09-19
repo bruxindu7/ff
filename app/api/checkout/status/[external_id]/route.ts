@@ -5,8 +5,8 @@ const BUCKPAY_BASE_URL = "https://api.realtechdev.com.br";
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "https://www.recargajogos.work",
-      "http://localhost:3000",
+  "https://www.recargajogo.best",
+  "http://localhost:3000",
 ];
 
 // helper para validar a origem
@@ -21,7 +21,10 @@ export async function GET(
   context: { params: Promise<{ external_id: string }> }
 ) {
   if (!isOriginAllowed(request)) {
-    return NextResponse.json({ error: "Clonei certo chora n magicu opkkkkkkkkkk" }, { status: 403 });
+    return NextResponse.json(
+      { error: "Origem não permitida" },
+      { status: 403 }
+    );
   }
 
   try {
@@ -33,11 +36,13 @@ export async function GET(
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.BUCKPAY_TOKEN!}`,
+          "User-Agent": "Buckpay API", // 🔥 obrigatório
         },
       }
     );
 
     const data = await r.json();
+    console.log("➡ Status BuckPay:", r.status, data);
 
     if (!r.ok) {
       return NextResponse.json({ error: data }, { status: r.status });

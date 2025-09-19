@@ -6,16 +6,16 @@ const PIX_CREATE_PATH = "/v1/transactions";
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "https://www.recargajogos.work",
+  "https://www.recargajogo.best",
   "http://localhost:3000",
 ];
 
+// helper para validar origem
 function isOriginAllowed(request: NextRequest): boolean {
   const referer = request.headers.get("referer");
   if (!referer) return false;
   return allowedOrigins.some((origin) => referer.startsWith(origin));
 }
-
 
 export async function POST(req: NextRequest) {
   if (!isOriginAllowed(req)) {
@@ -76,16 +76,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: data }, { status: r.status });
     }
 
-    return NextResponse.json(
-      {
-        id: data.data.id,
-        status: data.data.status,
-        brcode: data.data.pix.code,
-        qrBase64: data.data.pix.qrcode_base64,
-        amount: data.data.total_amount,
-      },
-      { status: 200 }
-    );
+  return NextResponse.json(
+  {
+    id: data.data.id,
+    externalId: payload.external_id, // 🔥 devolve o mesmo external_id que você criou
+    status: data.data.status,
+    brcode: data.data.pix.code,
+    qrBase64: data.data.pix.qrcode_base64,
+    amount: data.data.total_amount,
+  },
+  { status: 200 }
+);
+
   } catch (err) {
     console.error("⛔ Erro backend create-pix:", err);
     return NextResponse.json(

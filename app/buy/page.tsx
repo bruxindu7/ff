@@ -51,9 +51,8 @@ export default function PixPage() {
 
     const statusInterval = setInterval(async () => {
       try {
-        if (!data.transactionId) return;
-
-        const r = await fetch(`/api/webhook?id=${data.transactionId}`);
+    if (!data.externalId) return;
+        const r = await fetch(`/api/checkout/status/${data.externalId}`);
         const json = await r.json();
 
         if (json.status && json.status === "paid") {
@@ -61,27 +60,25 @@ export default function PixPage() {
           clearInterval(statusInterval);
 
           const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
-          }
-
-          // 🔹 Disparo do snippet oficial de conversão
-          if (typeof window !== "undefined" && (window as any).gtag) {
-            (window as any).gtag("event", "conversion", {
-              send_to: "AW-17580690127/JY3mCLfsyJ0bEM-VkL9B",
-              value: 1.0,
-              currency: "BRL",
-              transaction_id: ""
-            });
-          }
-
-
-
-          const upsellPages = ["/upsell", "/upsell-2", "/upsell-3"];
-          const randomPage = upsellPages[Math.floor(Math.random() * upsellPages.length)];
-          window.location.href = randomPage;
+        if (typeof window !== "undefined" && (window as any).gtag) {
+  (window as any).gtag("event", "conversion", {
+    send_to: "AW-17521187394/a2Z0CLqZy5kbEMK04KJB",
+    value: priceNumber || 1.0,
+    currency: "BRL",
+    transaction_id: data.externalId || data.id || "",
+  });
+  (window as any).gtag("event", "conversion", {
+    send_to: "AW-17521187394/XXXXXXX", 
+    value: priceNumber || 1.0,
+    currency: "BRL",
+    transaction_id: data.externalId || "",
+  });
+}
+          window.location.href = "/upsell";
         }
 
         if (json.status === "not_found") {
-          console.log("Transação ainda não registrada no backend");
+          console.log("Transação ainda não encontrada no BuckPay");
         }
       } catch (err) {
         console.error("Erro ao verificar status:", err);
@@ -112,7 +109,6 @@ export default function PixPage() {
 
   if (!pixData) return null;
 
-  // 🚀 Detecta se é especial (sem bônus)
   const isSpecial = !pixData.bonus || pixData.bonus === "null" || pixData.bonus === "";
 
   const baseNum = isSpecial ? 0 : parseInt(String(pixData.base).replace(/\D/g, "")) || 0;

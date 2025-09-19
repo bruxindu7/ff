@@ -494,191 +494,164 @@ sessionStorage.setItem("checkoutData", JSON.stringify({
       });
     });
 
-    // =========================
-    // 🚀 Modal Promo
-    // =========================
-    const formPix = document.getElementById("form-default") as HTMLFormElement;
+// =========================
+// 🚀 Modal Promo + Pix
+// =========================
+const formPix = document.getElementById("form-default") as HTMLFormElement;
+let isProcessing = false; // 🔥 trava para não enviar duplicado
 
-    if (formPix) {
-      formPix.addEventListener("submit", handleOpenPromo);
+if (formPix) {
+  formPix.addEventListener("submit", handleOpenPromo);
+}
+
+function handleOpenPromo(e: Event) {
+  e.preventDefault();
+  const btn = formPix.querySelector(".btn-submit") as HTMLButtonElement;
+  btn.disabled = true;
+  btn.textContent = "Processando...";
+  btn.style.background = "#f87171";
+
+  let valid = true;
+
+  formPix.querySelectorAll("input").forEach((input) => {
+    const errorDiv = input.parentElement?.querySelector(".error-message") as HTMLElement;
+    if (input.id === "promo") return;
+
+    if (input.value.trim() === "") {
+      input.classList.add("error");
+      if (errorDiv) errorDiv.style.display = "block";
+      valid = false;
+    } else {
+      input.classList.remove("error");
+      if (errorDiv) errorDiv.style.display = "none";
     }
+  });
 
-    function handleOpenPromo(e: Event) {
-      e.preventDefault();
-      const btn = formPix.querySelector(".btn-submit") as HTMLButtonElement;
-      btn.disabled = true;
-      btn.textContent = "Processando...";
-      btn.style.background = "#f87171";
+  if (!valid) {
+    btn.disabled = false;
+    btn.textContent = "Prosseguir para pagamento";
+    btn.style.background = "#d32f2f";
+    showToast("error", "Erro de Validação", "Por favor, preencha todos os campos obrigatórios corretamente.");
+    return;
+  }
 
-      let valid = true;
+  // ✅ só abre modal se passar na validação
+  document.getElementById("promoOverlay")?.classList.add("show");
+  document.getElementById("promoModal")?.classList.add("show");
 
-      formPix.querySelectorAll("input").forEach((input) => {
-        const errorDiv = input.parentElement?.querySelector(".error-message") as HTMLElement;
+  const skipBtn = document.getElementById("skipPromo") as HTMLButtonElement;
+  const finalizarBtn = document.getElementById("finalizarPromo") as HTMLButtonElement;
 
-        if (input.id === "promo") return;
+  if (skipBtn) {
+    skipBtn.onclick = () => {
+      skipBtn.disabled = true;
 
-        if (input.value.trim() === "") {
-          input.classList.add("error");
-          if (errorDiv) errorDiv.style.display = "block";
-          valid = false;
-        } else {
-          input.classList.remove("error");
-          if (errorDiv) errorDiv.style.display = "none";
-        }
-      });
+      // Atualiza o preço com o valor base original
+      const checkoutData = JSON.parse(sessionStorage.getItem("checkoutData") || "{}");
+      const baseCheckout = parseFloat(String(checkoutData.price).replace(",", ".")) || 0;
 
-      if (!valid) {
-        btn.disabled = false;
-        btn.textContent = "Prosseguir para pagamento";
-        btn.style.background = "#d32f2f";
+      const totalFinal = baseCheckout;
+      sessionStorage.setItem("checkoutData", JSON.stringify({
+        ...checkoutData,
+        price: totalFinal.toFixed(2)
+      }));
 
-        // 🔥 Toast de erro
-        showToast(
-          "error",
-          "Erro de Validação",
-          "Por favor, preencha todos os campos obrigatórios corretamente."
-        );
-        return; // 🚫 não abre modal
-      }
+      fecharPromo();
+      continuarPix();
+    };
+  }
 
-      // ✅ só abre modal se passar na validação
-      document.getElementById("promoOverlay")?.classList.add("show");
-      document.getElementById("promoModal")?.classList.add("show");
-
-document.getElementById("skipPromo")?.addEventListener("click", () => {
-  // Atualiza o preço com o valor base original
-  const checkoutData = JSON.parse(sessionStorage.getItem("checkoutData") || "{}");
-  const baseCheckout = parseFloat(String(checkoutData.price).replace(",", ".")) || 0;
-  
-  // Recalcular o total sem as promoções
-  const totalFinal = baseCheckout;
-
-  // Atualizar o sessionStorage com o novo valor do price
-sessionStorage.setItem("checkoutData", JSON.stringify({
-  ...checkoutData,
-  price: totalFinal.toFixed(2) // garante "9.90"
-}));
-
-  // Fechar o modal
-  fecharPromo();
-  
-  // Continuar com o pagamento (processamento do Pix)
-  continuarPix();
-});
-
-document.getElementById("finalizarPromo")?.addEventListener("click", () => {
-  const checkoutData = JSON.parse(sessionStorage.getItem("checkoutData") || "{}");
-
-  const originalPrice = parseFloat(String(price).replace(",", ".")) || 0;
-  const pacotePrice = 29.90;
-  const totalFinal = originalPrice + pacotePrice;
-
-  sessionStorage.setItem(
-    "checkoutData",
-    JSON.stringify({
-      ...checkoutData,
-      price: totalFinal.toFixed(2),
-      promoBundle: true,
-    })
-  );
-
-  // Atualiza resumo
-  const elPrice = document.getElementById("summaryPrice");
-  if (elPrice) elPrice.textContent = `R$ ${totalFinal.toFixed(2)}`;
-
-  fecharPromo();
-  continuarPix();
-});
-
-    }
-
-    function fecharPromo() {
-      document.getElementById("promoOverlay")?.classList.remove("show");
-      document.getElementById("promoModal")?.classList.remove("show");
-    }
-
-    async function continuarPix() {
-      const btn = formPix.querySelector(".btn-submit") as HTMLButtonElement;
-      btn.disabled = true;
-      btn.textContent = "Processando...";
-      btn.style.background = "#f87171";
-
-      let valid = true;
-
-      formPix.querySelectorAll("input").forEach((input) => {
-        const errorDiv = input.parentElement?.querySelector(".error-message") as HTMLElement;
-
-        if (input.id === "promo") return;
-
-        if (input.value.trim() === "") {
-          input.classList.add("error");
-          if (errorDiv) errorDiv.style.display = "block";
-          valid = false;
-        } else {
-          input.classList.remove("error");
-          if (errorDiv) errorDiv.style.display = "none";
-        }
-      });
-
-      if (!valid) {
-        btn.disabled = false;
-        btn.textContent = "Prosseguir para pagamento";
-        btn.style.background = "#d32f2f";
-        showToast("error", "Erro de Validação", "Por favor, preencha todos os campos obrigatórios corretamente.");
-        return;
-      }
+  if (finalizarBtn) {
+    finalizarBtn.onclick = () => {
+      finalizarBtn.disabled = true;
 
       const checkoutData = JSON.parse(sessionStorage.getItem("checkoutData") || "{}");
-const totalFinal = parseFloat(checkoutData.price);
+      const originalPrice = parseFloat(String(price).replace(",", ".")) || 0;
+      const pacotePrice = 29.90;
+      const totalFinal = originalPrice + pacotePrice;
 
-      let amountCents = Math.round(totalFinal * 100);
-      const orderId = Date.now().toString();
-      const description = `Recarga Free Fire - Pedido #${orderId}`;
+      sessionStorage.setItem("checkoutData", JSON.stringify({
+        ...checkoutData,
+        price: totalFinal.toFixed(2),
+        promoBundle: true,
+      }));
 
-      const payer = {
-  name: nomeInput?.value,   // Agora acessa a propriedade value corretamente
-  email: emailInput?.value,
-  phone: telefoneInput?.value,
-      };
+      const elPrice = document.getElementById("summaryPrice");
+      if (elPrice) elPrice.textContent = `R$ ${totalFinal.toFixed(2)}`;
 
-      try {
-        const r = await fetch("/api/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: amountCents, orderId, description, payer }),
-        });
+      fecharPromo();
+      continuarPix();
+    };
+  }
+}
 
-        const data = await r.json();
+function fecharPromo() {
+  document.getElementById("promoOverlay")?.classList.remove("show");
+  document.getElementById("promoModal")?.classList.remove("show");
+}
 
-        if (!r.ok || !data.id) {
-          showToast("error", "Erro", "Erro ao gerar PIX.");
-          btn.disabled = false;
-          btn.textContent = "Prosseguir para pagamento";
-          btn.style.background = "#d32f2f";
-          return;
-        }
+async function continuarPix() {
+  if (isProcessing) return; // ⚡ já tem requisição em andamento
+  isProcessing = true;
 
-sessionStorage.setItem("pixCheckout", JSON.stringify({
-  ...checkoutData,
-  transactionId: data.id,
-  brcode: data.brcode,
-  qrBase64: data.qrBase64,
-  totalAmount: totalFinal.toFixed(2),
-  createdAt: Date.now(),
-  userId: userId // 🔥 sempre salvar aqui
-}));
+  const btn = formPix.querySelector(".btn-submit") as HTMLButtonElement;
+  btn.disabled = true;
+  btn.textContent = "Processando...";
+  btn.style.background = "#f87171";
 
+  const checkoutData = JSON.parse(sessionStorage.getItem("checkoutData") || "{}");
+  const totalFinal = parseFloat(checkoutData.price);
 
-        setTimeout(() => {
-          window.location.href = "/buy";
-        }, 1500);
-      } catch (err) {
-        showToast("error", "Erro", "Falha na integração PIX.");
-        btn.disabled = false;
-        btn.textContent = "Prosseguir para pagamento";
-        btn.style.background = "#d32f2f";
-      }
+  const amountCents = Math.round(totalFinal * 100);
+  const orderId = Date.now().toString();
+  const description = `Recarga Free Fire - Pedido #${orderId}`;
+
+  const payer = {
+    name: nomeInput?.value,
+    email: emailInput?.value,
+    phone: telefoneInput?.value,
+  };
+
+  try {
+    const r = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: amountCents, orderId, description, payer }),
+    });
+
+    const data = await r.json();
+
+    if (!r.ok || !data.id) {
+      isProcessing = false;
+      showToast("error", "Erro", "Erro ao gerar PIX.");
+      btn.disabled = false;
+      btn.textContent = "Prosseguir para pagamento";
+      btn.style.background = "#d32f2f";
+      return;
     }
+
+    sessionStorage.setItem("pixCheckout", JSON.stringify({
+      ...checkoutData,
+      transactionId: data.id,
+      externalId: data.externalId,
+      brcode: data.brcode,
+      qrBase64: data.qrBase64,
+      totalAmount: totalFinal.toFixed(2),
+      createdAt: Date.now(),
+      userId: userId
+    }));
+
+    setTimeout(() => {
+      window.location.href = "/buy";
+    }, 1500);
+  } catch (err) {
+    isProcessing = false;
+    showToast("error", "Erro", "Falha na integração PIX.");
+    btn.disabled = false;
+    btn.textContent = "Prosseguir para pagamento";
+    btn.style.background = "#d32f2f";
+  }
+}
   }, [showToast]);
 
 
