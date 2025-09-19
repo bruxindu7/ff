@@ -5,7 +5,7 @@ const transactions: Record<string, any> = {}; // memória (reinicia a cada deplo
 
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
-  "https://www.recargasjogs.site",
+  "https://www.recargajogos.work",
 ];
 
 // helper para validar origem
