@@ -25,10 +25,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js) - Novo ID */}
         <script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17561727277"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17580690127"
         ></script>
         <script
           dangerouslySetInnerHTML={{
@@ -36,7 +36,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'AW-17561727277');
+              gtag('config', 'AW-17580690127');
             `,
           }}
         />
