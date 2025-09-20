@@ -16,7 +16,6 @@ function isOriginAllowed(request: NextRequest): boolean {
   return allowedOrigins.some((origin) => referer.startsWith(origin));
 }
 
-// Webhook chamado pelo BuckPay (⚠️ precisa ficar aberto)
 export async function POST(req: Request) {
   const body = await req.json();
   const data = body.data || {};
