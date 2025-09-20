@@ -9,39 +9,32 @@
   --shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: Inter, sans-serif;
   background: var(--bg);
   color: var(--text);
-}
-main {
-  min-height: 100vh; /* Garante que o conteúdo ocupe 100% da altura da tela */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Isso empurra o footer para o final */
+  margin: 0;
 }
 
-.container {
+/* Header fix */
+header {
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+header .container {
   max-width: 1120px;
   margin: 0 auto;
   padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
 }
 
-/* Header */
-header {
-  position: sticky;
-  top: 0;
-  background: #fff;
-  border-bottom: 1px solid var(--line);
-  
-  z-index: 40;
-}
 /* Caixa de destaque para o benefício */
 .highlight-box {
   background: #fff7f7;
@@ -267,13 +260,19 @@ header {
   color: #111827;
 }
 
-/* Responsivo - Tablets */
+/* ======================= */
+/* 🔥 Responsivo - Tablets */
+/* ======================= */
 @media (max-width: 768px) {
+  main {
+    padding-top: 40px; /* espaço extra abaixo do header */
+  }
+
   .checkout {
     max-width: 100%;
     margin: 20px auto;
     padding: 20px;
-    position: static; /* 🔥 remove o absolute que atrapalha no mobile */
+    position: static; /* remove absolute */
     transform: none;
   }
 
@@ -287,6 +286,7 @@ header {
 
   .checkout p.subtext {
     font-size: 14px;
+    line-height: 1.4;
   }
 
   .highlight-box {
@@ -294,8 +294,12 @@ header {
     padding: 12px;
   }
 
+  .countdown {
+    font-size: 18px;
+  }
+
   .countdown span {
-    font-size: 32px;
+    font-size: 36px;
   }
 
   .offer-item {
@@ -309,11 +313,11 @@ header {
   }
 
   .offer-info h3 {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .offer-info span {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .btn-submit {
@@ -323,14 +327,22 @@ header {
 
   .no-thanks {
     font-size: 13px;
+    margin-top: 14px;
   }
 }
 
-/* Responsivo - Celulares pequenos */
+/* ========================== */
+/* 🔥 Responsivo - Celulares  */
+/* ========================== */
 @media (max-width: 480px) {
+  main {
+    padding-top: 60px; /* espaço maior no mobile */
+  }
+
   .checkout {
-    margin: 10px;
+    margin: 20px 12px;
     padding: 16px;
+    border-radius: 10px;
   }
 
   .checkout h2 {
@@ -351,8 +363,12 @@ header {
     padding: 10px;
   }
 
+  .countdown {
+    font-size: 16px;
+  }
+
   .countdown span {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .offer-item {
@@ -367,11 +383,11 @@ header {
   }
 
   .offer-info h3 {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .offer-info span {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .btn-submit {

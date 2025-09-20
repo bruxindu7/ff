@@ -19,13 +19,11 @@ body {
 }
 
     .container{max-width:1120px; margin:0 auto; padding:0 20px}
-
-    /* Header */
-    header{position:sticky; top:0; background:#fff; border-bottom:1px solid var(--line); z-index:40}
-    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-    .brand-logo{width:28px;height:28px;border-radius:8px; display:grid; place-items:center; background:linear-gradient(135deg,#ef4444,#f59e0b); color:#fff}
-    .profile{width:36px;height:36px;border-radius:50%; background:#ddd}
+header {
+  max-width: 1120px; /* igual da Home */
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
 .brand-text {
   font-family: 'GarenaRegular', sans-serif;
@@ -500,37 +498,4 @@ form label {
 .toast.error {
   background: #D91A0D;
   color: #ffffff;
-}
-
-
-/* Corrige apenas o header no responsivo */
-@media (max-width: 768px) {
-  header {
-    height: auto;
-    padding: 0 12px;
-  }
-
-  .nav {
-    height: auto;                /* 🔥 altura flexível */
-    padding: 8px;
-  }
-
-  .brand-text {
-    font-size: 12px;             /* fonte menor */
-    gap: 6px;
-    max-width: 100%;             /* ocupa toda largura possível */
-    white-space: normal;         /* 🔥 permite quebrar linha */
-    overflow: visible;           /* mostra tudo */
-    text-overflow: unset;        /* remove "..." */
-    flex-wrap: wrap;             /* 🔥 quebra em 2 linhas se precisar */
-  }
-
-  .brand-text img {
-    height: 32px;                /* logo menor */
-  }
-
-  .profile {
-    width: 32px;
-    height: 32px;
-  }
 }

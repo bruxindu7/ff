@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import "./pix.css";
 import { useToast } from "@/hooks/useToast";
+import { Header } from "@/components/Header"; 
 
 export default function PixPage() {
   const { showToast, Toasts } = useToast();
@@ -119,35 +120,11 @@ if (typeof window !== "undefined" && (window as any).gtag) {
     totalAmount: isSpecial ? pixData.price : total
   }));
 
-  return (
-    <>
-      <main>
-        {/* HEADER */}
-{/* HEADER */}
-<header>
-  <div className="container nav">
-    <div
-      className="brand"
-      style={{ cursor: "pointer" }}
-      onClick={() => (window.location.href = "/")}
-    >
-      <div className="brand-text">
-        <Image src="/image.png" alt="Garena Logo" width={100} height={40} />
-        <span className="divider"></span>
-        <span>Canal Oficial de Recarga</span>
-      </div>
-    </div>
-    <div className="profile" title="Perfil">
-      <Image
-        src="/ff.webp"
-        alt="Perfil"
-        width={40}
-        height={40}
-        className="rounded-full object-cover"
-      />
-    </div>
-  </div>
-</header>
+return (
+  <>
+    <Header avatarIcon="/ff.webp" />
+
+    <main>
 
 
         {/* PIX */}

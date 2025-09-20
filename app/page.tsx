@@ -6,6 +6,9 @@ import Image from "next/image";
 import "./styles.css";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast"; // 🔥 importa o hook
+import { ImageCarousel } from "@/components/ImageCarousel"; // 👈 importa o carrossel da outra página
+import { Header } from "@/components/Header"; 
+import DecorativeBanner from "@/components/DecorativeBanner";
 
 export default function Home() {
   const router = useRouter(); // funciona no App Router
@@ -14,47 +17,6 @@ export default function Home() {
     document.getElementById("socialOverlay")?.classList.add("show");
     document.getElementById("socialModal")?.classList.add("show");
   }
-  useEffect(() => {
-    
-    // ==========================
-    // Carrossel automático
-    // ==========================
-    const track = document.querySelector(".carousel-track") as HTMLElement;
-    const slides = document.querySelectorAll(".carousel-slide");
-    const dots = document.querySelectorAll(".carousel-indicators .dot");
-    let index = 0;
-    const totalSlides = slides.length;
-
-    function showSlide(i: number) {
-      if (!track) return;
-      index = (i + totalSlides) % totalSlides; // loop infinito
-      track.style.transform = `translateX(-${index * 100}%)`;
-
-      dots.forEach((d, idx) =>
-        d.classList.toggle("active", idx === index)
-      );
-    }
-
-    // autoplay
-    const interval = setInterval(() => {
-      showSlide(index + 1);
-    }, 4000); // muda a cada 4s
-
-    // botões manuais
-    document
-      .querySelector(".carousel-btn.next")
-      ?.addEventListener("click", () => showSlide(index + 1));
-    document
-      .querySelector(".carousel-btn.prev")
-      ?.addEventListener("click", () => showSlide(index - 1));
-
-    // dots manuais
-    dots.forEach((dot, i) => {
-      dot.addEventListener("click", () => showSlide(i));
-    });
-
-    return () => clearInterval(interval);
-   }, []);
 
   // 🔥 Novo useEffect só para input e botão login
   useEffect(() => {
@@ -378,68 +340,33 @@ document.getElementById("popupModal")?.classList.add("show");
     document.querySelector(".btn.danger")?.addEventListener("click", confirmLogout);
   }, []);
 
-  return (
-    <>
-      <main>
-<header>
-  <div className="container nav">
-    <div
-      className="brand"
-      style={{ cursor: "pointer" }}
-      onClick={() => (window.location.href = "/")}
-    >
-      <div className="brand-text">
-        <Image src="/image.png" alt="Garena Logo" width={100} height={40} />
-        <span className="divider"></span>
-        <span>Canal Oficial de Recarga</span>
-      </div>
-    </div>
-    <div className="profile" title="Perfil">
-      <Image
-        src="/ff.webp"
-        alt="Perfil"
-        width={40}
-        height={40}
-        className="rounded-full object-cover"
-      />
-    </div>
-  </div>
-</header>
+return (
+  <>
+    {/* Header fora do <main>, full width */}
+    <Header avatarIcon="/ff.webp" />
 
-
-      {/* CARROSSEL */}
-      <div className="carousel-wrapper">
-        <div className="carousel">
-          <div className="carousel-track">
-            <div className="carousel-slide"><Image src="/1.webp" alt="Banner 1" width={900} height={300} /></div>
-            <div className="carousel-slide"><Image src="/2.webp" alt="Banner 2" width={900} height={300} /></div>
-            <div className="carousel-slide"><Image src="/3.webp" alt="Banner 3" width={900} height={300} /></div>
-          </div>
-
-          <button className="carousel-btn prev">&#10094;</button>
-          <button className="carousel-btn next">&#10095;</button>
-
-          <div className="carousel-indicators">
-            <span className="dot active"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </div>
-        </div>
-      </div>
+    <main>
+      <ImageCarousel />
 
 {/* SELEÇÃO DE JOGOS */}
-<section className="games">
-  <div className="container games-wrap">
+{/* SELEÇÃO DE JOGOS */}
+<section className="games relative bg-[#EFEFEF]">
+  {/* 🔥 Faixa decorativa dourada */}
+  <div className="relative -top-[1px]"> 
+    <DecorativeBanner />
+  </div>
+
+  <div className="container games-wrap relative z-10">
     <h3>Seleção de jogos</h3>
     <div className="app-grid">
       <button className="app selected" aria-label="Free Fire">
         <span className="app-icon">
-          <Image 
-            src="/icon.webp" 
-            alt="Free Fire" 
-            fill 
-            quality={100} 
-            className="object-cover rounded-[16px]" 
+          <Image
+            src="/icon.webp"
+            alt="Free Fire"
+            fill
+            quality={100}
+            className="object-cover rounded-[16px]"
           />
         </span>
         <span className="app-name">Free Fire</span>
@@ -447,12 +374,12 @@ document.getElementById("popupModal")?.classList.add("show");
 
       <button className="app" aria-label="Delta Force">
         <span className="app-icon">
-          <Image 
-            src="/delta.webp" 
-            alt="Delta Force" 
-            fill 
-            quality={100} 
-            className="object-cover rounded-[16px]" 
+          <Image
+            src="/delta.webp"
+            alt="Delta Force"
+            fill
+            quality={100}
+            className="object-cover rounded-[16px]"
           />
         </span>
         <span className="app-name">Delta Force</span>

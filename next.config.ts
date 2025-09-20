@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
     // 🚀 Ignora erros de tipagem TypeScript no build
     ignoreBuildErrors: true,
   },
+  images: {
+    // 🚀 Libera domínios externos para o <Image />
+    domains: [
+      "i.ibb.co",
+      "cdn-gop.garenanow.com",
+      "i.postimg.cc",
+      "contentgarena-a.akamaihd.net", // 👈 adiciona esse aqui
+    ],
+  },
 };
 
 export default nextConfig;

@@ -16,6 +16,12 @@
     a{text-decoration:none; color:inherit}
     .container{max-width:1120px; margin:0 auto; padding:0 20px}
     
+header {
+  width: 100%; /* full width */
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 
 
     /* Overlay escuro cobrindo toda tela */
@@ -167,20 +173,6 @@
   background: #D91A0D;
   color: #ffffff;
 }
-
-    /* Header */
-header {
-  position: sticky;
-  top: 0;
-  background: #fff;
-  border-bottom: 1px solid var(--line);
-  z-index: 40;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Sombra suave na parte de baixo */
-}
-    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-    .brand-logo{width:28px;height:28px;border-radius:8px; display:grid; place-items:center; background:linear-gradient(135deg,#ef4444,#f59e0b); color:#fff}
-    .profile{width:36px;height:36px;border-radius:50%; background:#ddd}
 
     /* Top banners (carousel estático) */
     .top-rail{background:#111;}
@@ -1065,38 +1057,7 @@ main {
     font-size: 18px;
   }
 }
-/* Corrige apenas o header no responsivo */
-@media (max-width: 768px) {
-  header {
-    height: auto;
-    padding: 0 12px;
-  }
 
-  .nav {
-    height: auto;                /* 🔥 altura flexível */
-    padding: 8px;
-  }
-
-  .brand-text {
-    font-size: 12px;             /* fonte menor */
-    gap: 6px;
-    max-width: 100%;             /* ocupa toda largura possível */
-    white-space: normal;         /* 🔥 permite quebrar linha */
-    overflow: visible;           /* mostra tudo */
-    text-overflow: unset;        /* remove "..." */
-    flex-wrap: wrap;             /* 🔥 quebra em 2 linhas se precisar */
-  }
-
-  .brand-text img {
-    height: 32px;                /* logo menor */
-  }
-
-  .profile {
-    width: 32px;
-    height: 32px;
-  }
-  
-}
 /* Corrige sociais só no responsivo */
 @media (max-width: 768px) {
   .socials {
