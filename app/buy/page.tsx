@@ -60,20 +60,19 @@ export default function PixPage() {
           clearInterval(statusInterval);
 
           const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
-        if (typeof window !== "undefined" && (window as any).gtag) {
+if (typeof window !== "undefined" && (window as any).gtag) {
+  const priceNumber =
+    parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
+
+  // 🚀 Evento de conversão principal
   (window as any).gtag("event", "conversion", {
-    send_to: "AW-17521187394/a2Z0CLqZy5kbEMK04KJB",
+    send_to: "AW-17583456078/WFOBCLqDm54bEM7-uMBB",
     value: priceNumber || 1.0,
     currency: "BRL",
     transaction_id: data.externalId || data.id || "",
   });
-  (window as any).gtag("event", "conversion", {
-    send_to: "AW-17521187394/XXXXXXX", 
-    value: priceNumber || 1.0,
-    currency: "BRL",
-    transaction_id: data.externalId || "",
-  });
 }
+
           window.location.href = "/upsell";
         }
 
