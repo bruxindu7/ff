@@ -65,13 +65,12 @@ if (typeof window !== "undefined" && (window as any).gtag) {
   const priceNumber =
     parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
 
-  // 🚀 Evento de conversão principal
-  (window as any).gtag("event", "conversion", {
-    send_to: "AW-17583456078/WFOBCLqDm54bEM7-uMBB",
-    value: priceNumber || 1.0,
-    currency: "BRL",
-    transaction_id: data.externalId || data.id || "",
-  });
+(window as any).gtag("event", "conversion", {
+  send_to: "AW-17580473579/roRWCKrb5p8bEOv5gr9B",
+  value: priceNumber || 1.0,
+  currency: "BRL",
+  transaction_id: data.externalId || data.id || "",
+});
 }
 
           window.location.href = "/upsell";
