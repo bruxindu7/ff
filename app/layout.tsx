@@ -30,7 +30,7 @@ export default function RootLayout({
         {/* Google tag (gtag.js) - Novo ID */}
         <script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17583456078"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17580473579"
         ></script>
         <script
           dangerouslySetInnerHTML={{
@@ -38,7 +38,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'AW-17583456078');
+              gtag('config', 'AW-17580473579');
             `,
           }}
         />
