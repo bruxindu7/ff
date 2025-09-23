@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js) - Novo ID */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=AW-17580473579"
@@ -69,29 +69,6 @@ export default function RootLayout({
           />
         </noscript>
         {/* End Meta Pixel Code */}
-
-        {/* 🔹 UTMify Pixel Google */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.googlePixelId = "68d210e60acfc00e2c22a0dc";
-              var a = document.createElement("script");
-              a.setAttribute("async", "");
-              a.setAttribute("defer", "");
-              a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-google.js");
-              document.head.appendChild(a);
-            `,
-          }}
-        />
-
-        {/* 🔹 UTMify principal */}
-        <script
-          src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-          data-utmify-prevent-xcod-sck
-          data-utmify-prevent-subids
-          async
-          defer
-        ></script>
       </head>
       <body className="antialiased">{children}</body>
     </html>

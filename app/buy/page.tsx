@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import "./pix.css";
 import { useToast } from "@/hooks/useToast";
-import { Header } from "@/components/Header";
+import { Header } from "@/components/Header"; 
 
 export default function PixPage() {
   const { showToast, Toasts } = useToast();
@@ -19,29 +19,15 @@ export default function PixPage() {
       return;
     }
 
-    let data = JSON.parse(saved);
+    const data = JSON.parse(saved);
 
-    // 🔹 Se não tiver timestamp, cria
     if (!data.createdAt) {
       data.createdAt = Date.now();
+      sessionStorage.setItem("pixCheckout", JSON.stringify(data));
     }
 
-    // 🔹 Puxa UTMs capturadas pelo UTMify e anexa no objeto
-    try {
-      const utmData = localStorage.getItem("utmify");
-      if (utmData) {
-        const utms = JSON.parse(utmData);
-        data = { ...data, utms }; // adiciona campo utms no pixCheckout
-      }
-    } catch (err) {
-      console.error("Erro ao ler UTMs:", err);
-    }
-
-    // 🔹 Salva de volta no sessionStorage
-    sessionStorage.setItem("pixCheckout", JSON.stringify(data));
     setPixData(data);
 
-    // 🔹 Inicia contador regressivo
     const DURATION = 15 * 60 * 1000;
     function atualizarContador() {
       const agora = Date.now();
@@ -64,10 +50,9 @@ export default function PixPage() {
     atualizarContador();
     const interval = setInterval(atualizarContador, 1000);
 
-    // 🔹 Verifica status do pagamento
     const statusInterval = setInterval(async () => {
       try {
-        if (!data.externalId) return;
+    if (!data.externalId) return;
         const r = await fetch(`/api/checkout/status/${data.externalId}`);
         const json = await r.json();
 
@@ -75,18 +60,18 @@ export default function PixPage() {
           showToast("success", "Pagamento aprovado!", "Redirecionando...");
           clearInterval(statusInterval);
 
-          const priceNumber =
-            parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
+          const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
+if (typeof window !== "undefined" && (window as any).gtag) {
+  const priceNumber =
+    parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
 
-          // 🔥 Dispara conversão Google Ads
-          if (typeof window !== "undefined" && (window as any).gtag) {
-            (window as any).gtag("event", "conversion", {
-              send_to: "AW-17580473579/roRWCKrb5p8bEOv5gr9B",
-              value: priceNumber || 1.0,
-              currency: "BRL",
-              transaction_id: data.externalId || data.id || "",
-            });
-          }
+(window as any).gtag("event", "conversion", {
+  send_to: "AW-17580473579/roRWCKrb5p8bEOv5gr9B",
+  value: priceNumber || 1.0,
+  currency: "BRL",
+  transaction_id: data.externalId || data.id || "",
+});
+}
 
           window.location.href = "/upsell";
         }
@@ -124,19 +109,15 @@ export default function PixPage() {
   if (!pixData) return null;
 
   const isSpecial = !pixData.bonus || pixData.bonus === "null" || pixData.bonus === "";
+
   const baseNum = isSpecial ? 0 : parseInt(String(pixData.base).replace(/\D/g, "")) || 0;
   const bonusNum = isSpecial ? 0 : parseInt(String(pixData.bonus).replace(/\D/g, "")) || 0;
   const total = isSpecial ? 0 : baseNum + bonusNum;
 
-  // 🔹 Atualiza sessionStorage com total calculado
-  sessionStorage.setItem(
-    "pixCheckout",
-    JSON.stringify({
-      ...pixData,
-      totalAmount: isSpecial ? pixData.price : total,
-    })
-  );
-
+  sessionStorage.setItem("pixCheckout", JSON.stringify({
+    ...pixData,
+    totalAmount: isSpecial ? pixData.price : total
+  }));
 
 return (
   <>
