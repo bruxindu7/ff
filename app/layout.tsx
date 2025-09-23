@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./styles.css";
 
-// 🔹 Declaração das fontes
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        {/* Google tag (gtag.js) - Novo ID */}
+        {/* Google tag (gtag.js) - IDs múltiplos */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=AW-17580473579"
@@ -38,7 +37,11 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+
+              // Conta 1
               gtag('config', 'AW-17580473579');
+              // Conta 2
+              gtag('config', 'AW-17584244441');
             `,
           }}
         />
