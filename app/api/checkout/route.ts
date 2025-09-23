@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { sendOrderToUtmify, formatToUtmifyDate } from "@/lib/utmifyService";
+import { UtmifyOrderPayload } from "@/interfaces/utmify";
 
 const BUCKPAY_BASE_URL = "https://api.realtechdev.com.br";
 const PIX_CREATE_PATH = "/v1/transactions";
@@ -7,7 +9,7 @@ const PIX_CREATE_PATH = "/v1/transactions";
 // 🔐 lista de domínios permitidos
 const allowedOrigins = [
   "https://www.recargasjogos.skin",
-    "http://localhost:3000",
+  "http://localhost:3000",
 ];
 
 // helper para validar origem
@@ -26,7 +28,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { amount, orderId, payer } = await req.json();
+    const { amount, orderId, payer, utms } = await req.json();
 
     const amountCents = parseInt(amount);
 
@@ -45,15 +47,15 @@ export async function POST(req: NextRequest) {
           : undefined,
       },
       tracking: {
-        ref: process.env.SITE_NAME || "FreefireJ", // ✅ identifica o site
-        src: null,
-        sck: null,
-        utm_source: null,
-        utm_medium: null,
-        utm_campaign: null,
-        utm_id: null,
-        utm_term: null,
-        utm_content: null,
+        ref: process.env.SITE_NAME || "FreefireJ", // identifica o site
+        src: utms?.src || null,
+        sck: utms?.sck || null,
+        utm_source: utms?.utm_source || null,
+        utm_medium: utms?.utm_medium || null,
+        utm_campaign: utms?.utm_campaign || null,
+        utm_id: utms?.utm_id || null,
+        utm_term: utms?.utm_term || null,
+        utm_content: utms?.utm_content || null,
       },
     };
 
@@ -76,18 +78,70 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: data }, { status: r.status });
     }
 
-  return NextResponse.json(
-  {
-    id: data.data.id,
-    externalId: payload.external_id, // 🔥 devolve o mesmo external_id que você criou
-    status: data.data.status,
-    brcode: data.data.pix.code,
-    qrBase64: data.data.pix.qrcode_base64,
-    amount: data.data.total_amount,
-  },
-  { status: 200 }
-);
+    // 🔹 Envia também para o UTMify como pending
+    try {
+      const utmifyPayload: UtmifyOrderPayload = {
+        orderId: data.data.id,
+        platform: process.env.SITE_NAME || "FreefireJ",
+        paymentMethod: "pix",
+        status: "waiting_payment", // 👈 pendente
+        createdAt: formatToUtmifyDate(new Date()),
+        approvedDate: null,
+        refundedAt: null,
+        customer: {
+          name: payload.buyer.name,
+          email: payload.buyer.email,
+phone: payload.buyer.phone ? payload.buyer.phone.replace(/\D/g, "") : undefined,
+document: payload.buyer.document ? payload.buyer.document.replace(/\D/g, "") : undefined,
+          country: "BR",
+          ip: req.headers.get("x-forwarded-for") ?? "127.0.0.1",
+        },
+        products: [
+          {
+            id: `prod_${Date.now()}`,
+            name: "Recarga Free Fire",
+            planId: null,
+            planName: null,
+            quantity: 1,
+            priceInCents: amountCents,
+          },
+        ],
+        trackingParameters: {
+          src: payload.tracking.src,
+          sck: payload.tracking.sck,
+          utm_source: payload.tracking.utm_source,
+          utm_medium: payload.tracking.utm_medium,
+          utm_campaign: payload.tracking.utm_campaign,
+          utm_id: payload.tracking.utm_id,
+          utm_term: payload.tracking.utm_term,
+          utm_content: payload.tracking.utm_content,
+        },
+        commission: {
+          totalPriceInCents: amountCents,
+          gatewayFeeInCents: 0,
+          userCommissionInCents: amountCents,
+          currency: "BRL",
+        },
+        isTest: false,
+      };
 
+      await sendOrderToUtmify(utmifyPayload);
+      console.log("✅ Pedido PENDING enviado pro UTMify:", utmifyPayload.orderId);
+    } catch (utmErr) {
+      console.error("⛔ Falha ao enviar pedido pro UTMify:", utmErr);
+    }
+
+    return NextResponse.json(
+      {
+        id: data.data.id,
+        externalId: payload.external_id,
+        status: data.data.status,
+        brcode: data.data.pix.code,
+        qrBase64: data.data.pix.qrcode_base64,
+        amount: data.data.total_amount,
+      },
+      { status: 200 }
+    );
   } catch (err) {
     console.error("⛔ Erro backend create-pix:", err);
     return NextResponse.json(
