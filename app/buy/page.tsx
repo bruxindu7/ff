@@ -56,25 +56,34 @@ export default function PixPage() {
         const r = await fetch(`/api/checkout/status/${data.externalId}`);
         const json = await r.json();
 
-        if (json.status && json.status === "paid") {
-          showToast("success", "Pagamento aprovado!", "Redirecionando...");
-          clearInterval(statusInterval);
+      if (json.status && json.status === "paid") {
+  showToast("success", "Pagamento aprovado!", "Redirecionando...");
+  clearInterval(statusInterval);
 
-          const priceNumber = parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
-if (typeof window !== "undefined" && (window as any).gtag) {
-  const priceNumber =
-    parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
+  if (typeof window !== "undefined" && (window as any).gtag) {
+    const priceNumber =
+      parseFloat(String(data.totalAmount || data.price).replace(",", ".")) || 0;
 
-(window as any).gtag("event", "conversion", {
-  send_to: "AW-17580473579/roRWCKrb5p8bEOv5gr9B",
-  value: priceNumber || 1.0,
-  currency: "BRL",
-  transaction_id: data.externalId || data.id || "",
-});
+    // 🔹 Conta 1
+    (window as any).gtag("event", "conversion", {
+      send_to: "AW-17580473579/roRWCKrb5p8bEOv5gr9B",
+      value: priceNumber || 1.0,
+      currency: "BRL",
+      transaction_id: data.externalId || data.id || "",
+    });
+
+    // 🔹 Conta 2
+    (window as any).gtag("event", "conversion", {
+      send_to: "AW-17584244441/MuY1CM_L458bENmN6cBB",
+      value: priceNumber || 1.0,
+      currency: "BRL",
+      transaction_id: data.externalId || data.id || "",
+    });
+  }
+
+  window.location.href = "/upsell";
 }
 
-          window.location.href = "/upsell";
-        }
 
         if (json.status === "not_found") {
           console.log("Transação ainda não encontrada no BuckPay");
